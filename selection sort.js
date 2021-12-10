@@ -13,3 +13,4 @@ selectionSort(arr,n){
        arr[min] = arr[i]
        arr[i] = temp
    }
+}
