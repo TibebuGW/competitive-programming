@@ -14,7 +14,5 @@ def countingValleys(steps, path):
             Unum = Dnum = 0
             if checker == 'D':
                 valley += 1
-            else: 
-                continue
-    
+                
     return valley
