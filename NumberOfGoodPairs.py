@@ -1,22 +1,33 @@
 class Solution:
+        def numIdenticalPairs(self, nums: List[int]) -> int:
+                toReturn = Counter(nums)
+                num = 0
+                for x in list(toReturn.values()):
+                        num += x*(x-1)/2 
+
+                return num
         
-    def numIdenticalPairs(self, nums: List[int]) -> int:
-        def fact(y) -> int:
-            if(y == 1 or y == 0):
-                return 1
-            else:
-                return y*fact(y-1)
+        
+############## Trial 2 ###########
+# class Solution:
+        
+#     def numIdenticalPairs(self, nums: List[int]) -> int:
+#         def fact(y) -> int:
+#             if(y == 1 or y == 0):
+#                 return 1
+#             else:
+#                 return y*fact(y-1)
             
-        toReturn = Counter(nums)
-        num = 0
+#         toReturn = Counter(nums)
+#         num = 0
         
-        for x in list(toReturn.values()):
-            if x > 1:
-                num += fact(x)/(2*fact(x-2))
-            else: 
-                continue
+#         for x in list(toReturn.values()):
+#             if x > 1:
+#                 num += fact(x)/(2*fact(x-2))
+#             else: 
+#                 continue
               
-        return int(num)
+#         return int(num)
       
       
 ############# Trial 1 ##########
