@@ -4,7 +4,9 @@ class Solution:
         def absDiff(arr: List[int])-> int:
             return max(arr) - min(arr)
         #nums.sort()
-            
+              
+
+
         
         for i in range(0, len(nums)):
             if len(nums)-i > stack[-1]:
