@@ -31,7 +31,7 @@ class Solution:
             
         return result
 
-############# trial 2 #################
+############# trial 2 TLE #################
 
 # class Solution:
 #     def longestSubarray(self, nums: List[int], limit: int) -> int:
@@ -64,7 +64,7 @@ class Solution:
 
 #         return result
 
-############# trial 1 #################
+############# trial 1 TLE #################
 
 # class Solution:
 #     def longestSubarray(self, nums: List[int], limit: int) -> int:
