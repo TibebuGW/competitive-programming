@@ -1,6 +1,35 @@
+########### trial 3 ###########
 
-
-
+class Solution:
+    def longestSubarray(self, nums: List[int], limit: int) -> int:
+        result = 0
+        
+        left = 0
+        right = 0
+        
+        minDeque = Deque()
+        maxDeque = Deque()
+        
+        while (right < len(nums)):
+            while len(minDeque) and nums[right] <= nums[minDeque[-1]]:
+                minDeque.pop()
+            minDeque.append(right)
+                
+            while len(maxDeque) and nums[right] >= nums[maxDeque[-1]]:
+                maxDeque.pop()
+            maxDeque.append(right)
+            
+            if abs(nums[maxDeque[0]] - nums[minDeque[0]]) > limit:
+                left += 1
+                if left > maxDeque[0]:
+                    maxDeque.popleft()
+                if left > minDeque[0]: 
+                    minDeque.popleft()
+            else:
+                result = max(result, right-left+1)
+                right += 1
+            
+        return result
 
 ############# trial 2 #################
 
