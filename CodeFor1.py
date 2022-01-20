@@ -1,3 +1,29 @@
+################ trial 2 ##################
+a,b,c = map(int, input().split())
+def solver(lev, index, n):
+    if lev == 1:
+        return n
+        
+    if index%2 == 1:
+        half = index//2
+        if half%2 == 1:
+            return solver(lev-1, (index-1)//2, n)//2
+        else:
+            return solver(lev-1, (index+1)//2, n)//2
+    else:
+        return solver(lev-1, index//2, n)%2
+            
+
+count = 0
+level = 1
+root = a
+while root > 1:
+    level += 1
+    root //= 2
+for i in range(b, c+1):
+    count += solver(level, i, a)
+
+print(count)
 ################ trial 1: MLE #############
 # a,b,c = map(int, input().split())
 # def dfs(x: int):
