@@ -15,7 +15,7 @@ class Solution:
                 return True
             
         arrindex = best
-        print(arrindex)
+        # print(arrindex)
         
         left = 0
         right = len(matrix[arrindex])-1
