@@ -3,8 +3,6 @@ class Solution:
         visited = set()
         result = 0
         n = len(isConnected)
-        in_bound = lambda row, col: 0 <= row < n and 0 <= col < n
-        directions = [[0,1], [0,-1], [-1,0], [1,0]]
         
         def dfs(row):
 
