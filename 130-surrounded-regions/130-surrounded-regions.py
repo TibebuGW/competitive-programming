@@ -29,7 +29,7 @@ class Solution:
                 if board[i][j] == "O" and (i,j) not in Os:
                     board[i][j] = "X"
                     
-        print(Os)
+        # print(Os)
 
         # result = [(1,1),(2,3)]
         # print((2,3) in result)
