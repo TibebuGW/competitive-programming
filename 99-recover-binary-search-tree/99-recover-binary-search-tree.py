@@ -9,19 +9,26 @@ class Solution:
         """
         Do not return anything, modify root in-place instead.
         """
-        result = []
+        self.first = None
+        self.second = None
+        
+        self.prev = TreeNode(float('-inf'))
+        
+        
         
         def dfs(node):
             if not node: return
             
             dfs(node.left)
-            result.append(node)
+            if self.first==None and self.prev.val > node.val:
+                self.first = self.prev
+                
+            if self.first and self.prev.val > node.val:
+                self.second = node
+            
+            self.prev = node
             dfs(node.right)
             
-        
         dfs(root)
-        # print(result)
-        s = sorted(node.val for node in result)
         
-        for i in range(len(s)):
-            result[i].val = s[i]
+        self.first.val, self.second.val = self.second.val, self.first.val
