@@ -6,9 +6,12 @@ class Solution:
             mmax = nums[i]
             mmin = nums[i]
             for j in range(i+1, len(nums)):
-                
-                mmax = max(mmax, nums[j])
-                mmin = min(mmin, nums[j])
+                if nums[j] > mmax:
+                    mmax = nums[j]
+                if nums[j] < mmin:
+                    mmin = nums[j]
+                # mmax = max(mmax, nums[j])
+                # mmin = min(mmin, nums[j])
                 
                 # print('max',mmax)
                 # print("min",mmin)
