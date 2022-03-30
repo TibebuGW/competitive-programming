@@ -1,19 +1,21 @@
 class Solution:
     def subArrayRanges(self, nums: List[int]) -> int:
-        i=0
-        ans=0
+        result = 0
         
-        while i<len(nums):
-            minheap=[]
-            maxheap=[]
-            j=i
-            while j <len(nums):
-                heappush(minheap,nums[j])
-                heappush(maxheap,-nums[j])
-                ans+=-maxheap[0]-minheap[0]
-                j+=1    
-            i+=1
-            
-        return ans    
+        for i in range(len(nums)):
+            mmax = nums[i]
+            mmin = nums[i]
+            for j in range(i+1, len(nums)):
+                
+                mmax = max(mmax, nums[j])
+                mmin = min(mmin, nums[j])
+                
+                # print('max',mmax)
+                # print("min",mmin)
+                result += mmax-mmin
+                # print("result", result)
+                
+        
+        return result   
                     
                 
