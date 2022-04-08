@@ -18,6 +18,7 @@ class Solution:
                 result.append(i)
                 
         count = 0
+        # print("abc")
         
         while queue:
             node = queue.popleft()
