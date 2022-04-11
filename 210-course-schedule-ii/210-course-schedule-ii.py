@@ -11,14 +11,12 @@ class Solution:
         def dfs(node):
             nonlocal cycle
             color[node] = 1
-            if cycle:
-                return
             for child in graph[node]:
                 if color[child] == 0:
                     dfs(child)
                 if color[child] == 1:
                     cycle = True
-                    
+
 
             color[node] = 2
             orderStack.append(node)
