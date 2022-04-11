@@ -1,32 +1,32 @@
 from collections import deque
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        inDegree = [0]*numCourses
-        outDegree = defaultdict(set)
+        graph = defaultdict(set)
+        color = [0]*numCourses
+        orderStack = []
+        for course, prerequisite in prerequisites:
+            graph[prerequisite].add(course)
         
-        for course, pre in prerequisites:
-            inDegree[course] += 1
-            outDegree[pre].add(course)
-            
-        # print(inDegree)
-        # print(outDegree)
-        result = []
-        queue = deque([])
-        for i in range(numCourses):
-            if inDegree[i] == 0:
-                queue.append(i)
-                result.append(i)
-                
-        count = 0
-        # print("abc")
-        
-        while queue:
-            node = queue.popleft()
-            if node not in result: result.append(node)
-            count += 1
-            for j in outDegree[node]:
-                inDegree[j] -= 1
-                if inDegree[j] == 0:
-                    queue.append(j)
+        cycle = False
+        def dfs(node):
+            nonlocal cycle
+            color[node] = 1
+            if cycle:
+                return
+            for child in graph[node]:
+                if color[child] == 0:
+                    dfs(child)
+                if color[child] == 1:
+                    cycle = True
                     
-        return result if count == numCourses else []
+
+            color[node] = 2
+            orderStack.append(node)
+
+        for i in range(numCourses):
+            if color[i] == 0:
+                dfs(i)
+
+
+
+        return orderStack[::-1] if not cycle else []
