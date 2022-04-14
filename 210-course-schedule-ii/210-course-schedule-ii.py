@@ -10,6 +10,8 @@ class Solution:
         cycle = False
         def dfs(node):
             nonlocal cycle
+            if cycle:
+                return
             color[node] = 1
             for child in graph[node]:
                 if color[child] == 0:
@@ -25,6 +27,6 @@ class Solution:
             if color[i] == 0:
                 dfs(i)
 
-
+        print(color)
 
         return orderStack[::-1] if not cycle else []
