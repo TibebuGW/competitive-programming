@@ -1,84 +1,47 @@
+# https://leetcode.com/problems/accounts-merge/
+
 class Solution:
     def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
-        size = defaultdict(int)
-        ans = []
-        parent = [i for i in range(len(accounts))]
-        d = {}
-        added = {}
+        def find_set(i):
+            if i == parent[i]:
+                return i
+            parent[i] = find_set(parent[i])
+            return parent[i]
         
-        for i in range(len(accounts)):
-            size[i] = len(accounts[i])-1
-        
-        def find(a):
-            while a != parent[a]:
-                a = parent[a]
-            return a
-        
-        def union(a, b):
-            a = find(a)
-            b = find(b)
-            
-            if a != b:
-                if size[a] > size[b]:
+        def union_sets(i, j):
+            a = find_set(i)
+            b = find_set(j)
+            if a!=b:
+                if size[a] >= size[b]:
                     parent[b] = a
                     size[a] += size[b]
                 else:
                     parent[a] = b
                     size[b] += size[a]
                     
-        def merge(i, j, flag):
-            if flag == 0:
-                temp = [accounts[i][0]] 
-                temp2 = accounts[i][1:] + accounts[j][1:]
-                temp2 = list(set(temp2))
-                temp2.sort()
-                return temp+temp2
-            else:
-                temp = [accounts[i][0]] 
-                temp2 = accounts[i][1:] + ans[j][1:]
-                temp2 = list(set(temp2))
-                temp2.sort()
-                return temp+temp2
-            
-        
-        for i in range(len(accounts)):
-            for j in range(1, len(accounts[i])):
-                if accounts[i][j] in d.keys():
-                    # print(d)
-                    union(i, d[accounts[i][j]])
-                    # print(parent)
-                else:
-                    d[accounts[i][j]] = i
-        
-        # print(d)
-        # print(parent)
+        graph, parent, size, owner = [], defaultdict(int), defaultdict(int), {}
+        for idx, account in enumerate(accounts):
+            for i in range(1,len(account)):
+                parent[account[i]] = account[i]
+                size[account[i]] = 1
+                owner[account[i]] = idx
+                for j in range(i+1, len(account)):
+                    graph.append((account[i], account[j]))
                     
-        for i in range(len(parent)):
-            if i != parent[i]:
-                root_parent = find(parent[i])
-                if root_parent in added.keys():
-                    ans[added[root_parent]] = merge(i, added[root_parent], 1)
-                    added[i] = added[root_parent]
-                else:
-                    idx = len(ans)
-                    added[i] = idx
-                    added[root_parent] = idx
-                    ans.append(merge(i, root_parent,0))
-            else:
-                if parent[i] not in added.keys():
-                    idx = len(ans)
-                    added[i] = idx
-                    temp = [accounts[i][0]] 
-                    temp2 = accounts[i][1:]
-                    temp2 = list(set(temp2))
-                    temp2.sort()
-                    ans.append(temp + temp2)
-                
+        for con in graph:
+            union_sets(con[0], con[1])
             
-#         for i in range(len(parent)):
-#             if i not in added:
+        
+        answer = defaultdict(list)
+        for k, v in parent.items():
+            answer[owner[find_set(v)]].append(k)
+        res = []
+        for x, y in answer.items():
+            a = [accounts[x][0]]
+            a.extend(sorted(y))
+            res.append(a)
+            
+        return res
                 
                 
-        return ans
-        
-        
+                
