@@ -1,48 +1,36 @@
-
-
-class TrieNode:
-    def __init__(self):
-        self.children = {}
-        self.isEnd = False
-    
-class Trie:
-
-    def __init__(self):
-        self.root = TrieNode()
-
-    def insert(self, word: str) -> None:
-        
-        current = self.root
-        
-        for char in word:
-            if char not in current.children:
-                current.children[char] = TrieNode()
-            current = current.children[char]
-        
-        current.isEnd = True
-
-    def dfs_search(self, word: str, i: int, current: TrieNode) -> bool:
-        
-        if i == len(word): return current.isEnd # reached the end
-        
-        if word[i] == ".":
-            for child in current.children:
-                if self.dfs_search(word, i+1, current.children[child]):
-                    return True
-        else:
-            if word[i] not in current.children:
-                return False
-            return self.dfs_search(word, i+1, current.children[word[i]])
-        
-        return False
-    
 class WordDictionary:
 
     def __init__(self):
-        self.trie = Trie()
+        self.map = {}
 
     def addWord(self, word: str) -> None:
-        self.trie.insert(word)
+        cur = self.map
+        for char in word:
+            if char not in cur:
+                cur[char] = {}
+            cur = cur[char]
+        
+        cur["last"] = True
+        # print(self.map)
+        
+    def searcher(self, word, index, field) -> bool:
+        if index == len(word):
+            # print(field)
+            return "last" in field
+        if word[index] == ".":
+            for key, value in field.items():
+                if key != "last" and self.searcher(word, index+1, field[key]):
+                    return True
+        if word[index] not in field:
+            return False
+        return self.searcher(word, index+1, field[word[index]])
 
     def search(self, word: str) -> bool:
-        return self.trie.dfs_search(word, 0, self.trie.root)
+        return self.searcher(word, 0, self.map)
+            
+
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
