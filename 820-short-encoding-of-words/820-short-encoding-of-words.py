@@ -43,4 +43,4 @@ class Solution:
             if not trie.prefix(words[i][::-1]):
                 trie.insert(words[i][::-1])
                 
-        return trie.result()
+        return trie.count
