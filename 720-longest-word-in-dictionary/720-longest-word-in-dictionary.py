@@ -1,64 +1,34 @@
-import time
-class TrieNode:
+class TrieNode(object):
     def __init__(self):
-        self.map = {}
+        self.children=collections.defaultdict(TrieNode)
+        self.isEnd=False
+        self.word =''
         
-class Trie:
+class Trie(object):
     def __init__(self):
-        self.root = TrieNode()
-        self.result = []
-        self.maxLength = 0
+        self.root=TrieNode()
         
     def insert(self, word):
-        cur = self.root
-        for char in word:
-            if char not in cur.map:
-                cur.map[char] = TrieNode()
-            cur = cur.map[char]
-        cur.map["last"] = True      
-        
-    def search(self, word):
-        cur = self.root
-        for char in word:
-            if char not in cur.map:
-                return False
-            cur = cur.map[char]
-        
-        # print(type(cur.map))
-        return "last" in cur.map
+        node=self.root
+        for c in word:
+            node =node.children[c]
+        node.isEnd=True
+        node.word=word
     
-class Solution:
-    def longestWord(self, words: List[str]) -> str:
-        start = time.time()
-        words.sort(key=len)
+    def bfs(self):
+        q=collections.deque([self.root])
+        res=''
+        while q:
+            cur=q.popleft()
+            for n in cur.children.values():
+                if n.isEnd:
+                    q.append(n)
+                    if len(n.word)>len(res) or n.word<res:
+                        res=n.word
+        return res 
+    
+class Solution(object):
+    def longestWord(self, words):
         trie = Trie()
-        
-        result = []
-        maxLength = 0
-        
-        for i in range(len(words)):
-            flag = True
-            # if trie.search(words[i]):
-            #     continue
-
-            for j in range(len(words[i])-1):
-                if not trie.search(words[i][:j+1]):
-                    flag = False
-                    break
-            
-            # print(words[i], flag) 
-            if flag:
-                if len(words[i]) > maxLength:
-                    result = [words[i]]
-                    maxLength = len(words[i])
-                elif len(words[i]) == maxLength:
-                    result.append(words[i])
-                    
-            trie.insert(words[i])
-        
-        # print(result)
-        # end = time.time()
-        # print(end-start)
-        
-        return "" if len(result) == 0 else sorted(result)[0]
-            
+        for w in words: trie.insert(w)
+        return trie.bfs()
