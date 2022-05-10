@@ -13,9 +13,6 @@ class Solution:
                 nums[left], nums[right] = nums[right], nums[left]
                 left += 1
                 right += 1
-            # elif nums[left] != 0 and nums[right] != 0:
-            #     left += 1
-            #     right += 1
             else:
                 left += 1
                 right += 1
