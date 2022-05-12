@@ -2,4 +2,6 @@ class Solution:
     def missingNumber(self, nums: List[int]) -> int:
         n = len(nums)
         total = n*(n+1)/2
-        return int(total-sum(nums))
+        for num in nums:
+            total += (~num +1)
+        return int(total)
