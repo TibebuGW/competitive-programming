@@ -22,16 +22,18 @@ class Solution:
             else:
                 h.next = l2
             return dummy.next
+    
+    def merge_sort(self, lists, l, r):
+        if l > r:
+            return None
+        if l == r:
+            return lists[l]
+        mid = (l+r)//2
+        first = self.merge_sort(lists, mid+1, r)
+        second = self.merge_sort(lists, l, mid)
+        return self.merge(first, second)
         
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        if not lists:
-            return None
-        if len(lists) == 1:
-            return lists[0]
-        l = 0
-        r = len(lists)-1
-        mid = (l+r)//2
-        first = self.mergeKLists(lists[l:mid+1])
-        second = self.mergeKLists(lists[mid+1:])
-        return self.merge(first, second)
+        return self.merge_sort(lists, 0, len(lists)-1)
+       
                 
