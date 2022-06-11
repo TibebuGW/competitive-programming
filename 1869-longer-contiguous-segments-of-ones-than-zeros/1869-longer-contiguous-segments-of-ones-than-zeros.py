@@ -9,17 +9,13 @@ class Solution:
             if num == "1":
                 onecnt += 1
                 oneans = max(oneans, onecnt)
+                zerocnt = 0
             else:
+                zerocnt += 1
+                zeroans = max(zerocnt, zeroans)
                 onecnt = 0
         
-        for num in nums:
-            if num == "0":
-                zerocnt += 1
-                zeroans = max(zeroans, zerocnt)
-            else:
-                zerocnt = 0
-            
-        # print(zeroans, oneans)
+        
                 
         return True if oneans > zeroans else False
         
