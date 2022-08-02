@@ -21,8 +21,10 @@ class Solution:
         # print(prev)
         # print(slow)
         
-        while prev and prev.val == slow.val:
+        while prev:
+            if prev.val != slow.val:
+                return False
             slow = slow.next
             prev = prev.next
         
-        return not prev
+        return True
