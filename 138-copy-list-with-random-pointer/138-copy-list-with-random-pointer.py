@@ -9,38 +9,23 @@ class Node:
 
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        if not head:
-            return None
-
-        original = temp = Node(-100000)
-        node = head
-        d = {}
-        index = 0
+        dic, prev, node = {}, None, head
         while node:
-            temp.next = Node(node.val, None, None)
-            d[node] = index
-            node = node.next
-            temp = temp.next
-            index += 1
-            
-        original = original.next
-        
-        temp = original
-        node = head
-        
-        while node:
-            if not node.random:
-                temp.random = None
+            if node not in dic:
+                # Use a dictionary to map the original node to its copy
+                dic[node] = Node(node.val, node.next, node.random)
+            if prev:
+                # Make the previous node point to the copy instead of the original.
+                prev.next = dic[node]
             else:
-                i = d[node.random]                   
-                        
-                temp1 = original
-                while i:
-                    temp1 = temp1.next
-                    i -= 1
-                temp.random = temp1
-                
-            temp = temp.next
-            node = node.next
-        
-        return original
+                # If there is no prev, then we are at the head. Store it to return later.
+                head = dic[node]
+            if node.random:
+                if node.random not in dic:
+                    # If node.random points to a node that we have not yet encountered, store it in the dictionary.
+                    dic[node.random] = Node(node.random.val, node.random.next, node.random.random)
+                # Make the copy's random property point to the copy instead of the original.
+                dic[node].random = dic[node.random]
+            # Store prev and advance to the next node.
+            prev, node = dic[node], node.next
+        return head
