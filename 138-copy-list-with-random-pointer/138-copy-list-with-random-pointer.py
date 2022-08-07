@@ -9,23 +9,26 @@ class Node:
 
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        dic, prev, node = {}, None, head
+        d = {}
+        prev = None
+        node = head
+        
         while node:
-            if node not in dic:
-                # Use a dictionary to map the original node to its copy
-                dic[node] = Node(node.val, node.next, node.random)
-            if prev:
-                # Make the previous node point to the copy instead of the original.
-                prev.next = dic[node]
+            if node not in d:
+                d[node] = Node(node.val, node.next, node.random)
+                
+            if head == node:
+                head = d[node]
             else:
-                # If there is no prev, then we are at the head. Store it to return later.
-                head = dic[node]
+                prev.next = d[node]
+                
             if node.random:
-                if node.random not in dic:
-                    # If node.random points to a node that we have not yet encountered, store it in the dictionary.
-                    dic[node.random] = Node(node.random.val, node.random.next, node.random.random)
-                # Make the copy's random property point to the copy instead of the original.
-                dic[node].random = dic[node.random]
-            # Store prev and advance to the next node.
-            prev, node = dic[node], node.next
+                if node.random not in d:
+                    d[node.random] = Node(node.random.val, node.random.next, node.random.random)
+                
+                d[node].random = d[node.random]
+            
+            prev = d[node]
+            node = node.next
+        
         return head
