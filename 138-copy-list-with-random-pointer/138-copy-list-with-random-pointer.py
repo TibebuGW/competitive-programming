@@ -14,11 +14,14 @@ class Solution:
 
         original = temp = Node(-100000)
         node = head
-        
+        d = {}
+        index = 0
         while node:
             temp.next = Node(node.val, None, None)
+            d[node] = index
             node = node.next
             temp = temp.next
+            index += 1
             
         original = original.next
         
@@ -29,11 +32,7 @@ class Solution:
             if not node.random:
                 temp.random = None
             else:
-                node1 = head
-                i = 0
-                while node1 != node.random:
-                    node1 = node1.next
-                    i += 1                        
+                i = d[node.random]                   
                         
                 temp1 = original
                 while i:
