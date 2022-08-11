@@ -4,12 +4,6 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def printer(self, node):
-        arr = []
-        while node:
-            arr.append(node.val)
-            node = node.next
-        print(arr)
     def nodesBetweenCriticalPoints(self, head: Optional[ListNode]) -> List[int]:
         counter = 1
         original = head
