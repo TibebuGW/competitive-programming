@@ -8,19 +8,6 @@ class Solution:
     def minDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        leftDepth = self.minDepth(root.left)
-        if leftDepth:
-            leftDepth += 1
-        else:
-            leftDepth = 100000000
-            
-        rightDepth = self.minDepth(root.right)
-        if rightDepth:
-            rightDepth += 1
-        else:
-            rightDepth = 100000000
-        
-        if leftDepth == rightDepth == 100000000:
-            return 1
-        else:
-            return min(leftDepth, rightDepth)
+        if not root.left or not root.right:
+            return self.minDepth(root.left)+self.minDepth(root.right)+1
+        return min(self.minDepth(root.left), self.minDepth(root.right))+1
