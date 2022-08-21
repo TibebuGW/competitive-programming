@@ -7,25 +7,9 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        
-        def dfs(node):
-            if not node:
-                return None
-                        
-            if node == p or node == q:
-                return node
-            else:
-                left = dfs(node.left)
-                right = dfs(node.right)
-                if not left and not right:
-                    return None
-                elif left and right:
-                    return node
-                elif left:
-                    return left
-                else:
-                    return right
-            
-        
-        return dfs(root)
-                
+        if max(p.val, q.val) < root.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+        elif min(p.val, q.val) > root.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        else:
+            return root
