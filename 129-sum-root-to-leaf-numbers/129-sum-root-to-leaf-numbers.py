@@ -12,12 +12,12 @@ class Solution:
             if not node:
                 return
             if not node.left and not node.right:
-                num += str(node.val)
-                nums.append(int(num))
+                num = num*10 + node.val
+                nums.append(num)
 
-            num+= str(node.val)
+            num = num*10 + node.val
             dfs(node.left, num)
             dfs(node.right, num)
             
-        dfs(root, "")
+        dfs(root, 0)
         return sum(nums)
