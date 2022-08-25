@@ -3,8 +3,6 @@ class Solution:
         r = collections.Counter(ransomNote)
         m = collections.Counter(magazine)
         
-        print(r)
-        print(m)
         for char in ransomNote:
             if char not in m or not m[char]:
                 return False
