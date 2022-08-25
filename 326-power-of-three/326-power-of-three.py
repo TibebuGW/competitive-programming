@@ -1,3 +1,13 @@
 class Solution:
     def isPowerOfThree(self, n: int) -> bool:
-        return n > 0 and 1162261467 % n == 0
+        
+        def recursion(n):
+            print(n)
+            if n == 1:
+                return True
+            if n%3 != 0 or n < 1:
+                return False
+            
+            return recursion(n//3)
+        
+        return recursion(n)
