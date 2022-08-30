@@ -5,27 +5,30 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    
+    
     def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
-        res = []
-        
-        hmap = {}
-        
-        def recurse(node, path):
-            if node is None:
-                return '#'
+        res = set()
+        d = {}
             
-            path += ','.join([str(node.val), recurse(node.left, path), recurse(node.right, path)])
-            
-            if path in hmap:
-                hmap[path] += 1
-                if hmap[path] == 2:
-                    res.append(node)
+        def dfs(node):
+            nonlocal d
+            nonlocal res
+            if not node:
+                return "#"
+            # print("node.val:",node.val)
+            temp = "-".join([str(node.val), dfs(node.left), dfs(node.right)])
+            if temp not in d:
+                d[temp] = 0
+            elif d[temp] == 0:
+                res.add(node)
+                d[temp] += 1
             else:
-                hmap[path] = 1
-                
+                d[temp] += 1
+            # print(d)
+            return temp
             
-            return path
+        dfs(root)
         
-        recurse(root, '')
-        #print(hmap) I SUGGEST YOU PRINT THIS - TO UNDERSTAND WHAT IS HAPPENING.
         return res
+            
