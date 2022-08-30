@@ -5,49 +5,27 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def serialize(self, root):
-        arr = []
-        
-        def dfs(node, level, side):
-            nonlocal arr
-            if not node:
-                return
-            
-            component = "*"+str(level) + str(node.val) + side
-            arr.append(component)
-            dfs(node.left, level+1, "l")
-            dfs(node.right, level+1, "r")
-        
-        dfs(root, 0,"r")
-        
-        return "".join(arr)
     def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
-        res = set()
-        d = {}
-        def inorder(node):
-            if not(node):
-                return []
-            return inorder(node.left) + [str(node.val)] + inorder(node.right)
-            
-        def dfs(node):
-            nonlocal d
-            nonlocal res
-            if not node:
-                return
-            # print("node.val:",node.val)
-            temp = self.serialize(node)
-            if temp not in d:
-                d[temp] = 0
-            elif d[temp] == 0:
-                res.add(node)
-                d[temp] += 1
-            else:
-                d[temp] += 1
-            # print(d)
-            dfs(node.left)
-            dfs(node.right)
-            
-        dfs(root)
+        res = []
         
-        return res
+        hmap = {}
+        
+        def recurse(node, path):
+            if node is None:
+                return '#'
             
+            path += ','.join([str(node.val), recurse(node.left, path), recurse(node.right, path)])
+            
+            if path in hmap:
+                hmap[path] += 1
+                if hmap[path] == 2:
+                    res.append(node)
+            else:
+                hmap[path] = 1
+                
+            
+            return path
+        
+        recurse(root, '')
+        #print(hmap) I SUGGEST YOU PRINT THIS - TO UNDERSTAND WHAT IS HAPPENING.
+        return res
