@@ -14,8 +14,10 @@ class Solution:
                 return
             if low <= node.val <= high:
                 total += node.val
-            dfs(node.left)
-            dfs(node.right)
+            if node.val > low:
+                dfs(node.left)
+            if node.val < high:
+                dfs(node.right)
             
     
         dfs(root)
