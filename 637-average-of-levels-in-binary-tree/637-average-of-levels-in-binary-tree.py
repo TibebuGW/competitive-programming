@@ -8,27 +8,20 @@ from collections import deque
 class Solution:
     def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
         queue = deque([root])
-        result = []
+        
+        ans = []
         
         while queue:
-            lst = []
             n = len(queue)
-            
+            total = 0
             for i in range(n):
                 node = queue.popleft()
-                if node:
+                total += node.val
+                if node.left:
                     queue.append(node.left)
+                if node.right:
                     queue.append(node.right)
-                    lst.append(node.val)
-                
-            if lst:
-                result.append(self.average(lst))
-            # print(result)
-            
+                    
+            ans.append(total/n)
         
-        return result
-            
-    
-    def average(self, lst):
-        
-        return sum(lst)/len(lst)
+        return ans
