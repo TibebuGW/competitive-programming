@@ -1,23 +1,21 @@
 class Solution:
-    def numsSameConsecDiff(self, N: int, K: int) -> List[int]:
-        if N == 1:
-            return [i for i in range(10)]
-
-        # initialize the queue with candidates for the first level
-        queue = [digit for digit in range(1, 10)]
-
-        for level in range(N-1):
-            next_queue = []
-            for num in queue:
-                tail_digit = num % 10
-                # using set() to avoid duplicates when K == 0
-                next_digits = set([tail_digit + K, tail_digit - K])
-
-                for next_digit in next_digits:
-                    if 0 <= next_digit < 10:
-                        new_num = num * 10 + next_digit
-                        next_queue.append(new_num)
-            # start the next level
-            queue = next_queue
-
-        return queue
+    def numsSameConsecDiff(self, n: int, k: int) -> List[int]:
+        ans = set()
+        
+        def dfs(level, candidate):
+            nonlocal ans
+            
+            if level == 0:
+                ans.add(int(candidate))
+                return
+            
+            if int(candidate[-1])-k >= 0:
+                dfs(level-1, candidate+str(int(candidate[-1])-k))
+            if int(candidate[-1])+k <= 9:
+                dfs(level-1, candidate+str(int(candidate[-1])+k))
+                
+        
+        for i in range(1,10):
+            dfs(n-1, str(i))
+            # print(i)      
+        return ans
