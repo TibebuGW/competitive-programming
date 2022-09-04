@@ -6,16 +6,16 @@ class Solution:
             nonlocal ans
             
             if level == 0:
-                ans.add(int(candidate))
+                ans.add(candidate)
                 return
             
-            if int(candidate[-1])-k >= 0:
-                dfs(level-1, candidate+str(int(candidate[-1])-k))
-            if int(candidate[-1])+k <= 9:
-                dfs(level-1, candidate+str(int(candidate[-1])+k))
+            if (candidate%10)-k >= 0:
+                dfs(level-1, (candidate*10)+((candidate%10)-k))
+            if (candidate%10)+k <= 9:
+                dfs(level-1, (candidate*10)+((candidate%10)+k))
                 
         
         for i in range(1,10):
-            dfs(n-1, str(i))
+            dfs(n-1, i)
             # print(i)      
         return ans
