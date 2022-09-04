@@ -3,7 +3,6 @@ class Solution:
         ans = set()
         
         def dfs(level, candidate):
-            nonlocal ans
             
             if level == 0:
                 ans.add(candidate)
