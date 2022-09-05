@@ -16,15 +16,15 @@ class Solution:
         arr = []
         while queue:
             n = len(queue)
-            temp = []
+            temp1 = []
             for i in range(n):
                 node = queue.popleft()
-                temp.append(node.val)
+                temp1.append(node.val)
                 
                 for child in node.children:
                     if child:
                         queue.append(child)
                     
-            arr.append(temp)
+            arr.append(temp1)
         
         return arr
