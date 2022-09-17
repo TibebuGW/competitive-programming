@@ -1,21 +1,22 @@
 class Solution:
     def palindromePairs(self, words: List[str]) -> List[List[int]]:
-        def is_palindrome(check):
-            return check == check[::-1]
-
-        words = {word: i for i, word in enumerate(words)}
-        valid_pals = []
-        for word, k in words.items():
+        ans = []
+        def isPalindrome(str1):
+            return str1 == str1[::-1]
+        
+        d = {word: index for index, word in enumerate(words)}
+        
+        for index, word in enumerate(words):
             n = len(word)
             for j in range(n+1):
-                pref = word[:j]
+                pre = word[:j]
                 suf = word[j:]
-                if is_palindrome(pref):
-                    back = suf[::-1]
-                    if back != word and back in words:
-                        valid_pals.append([words[back],  k])
-                if j != n and is_palindrome(suf):
-                    back = pref[::-1]
-                    if back != word and back in words:
-                        valid_pals.append([k, words[back]])
-        return valid_pals
+                back = suf[::-1]
+                forward = pre[::-1]
+                if isPalindrome(pre) and back in d and back != word:
+                    ans.append([d[suf[::-1]], index])
+                
+                if suf != "" and isPalindrome(suf) and forward in d:
+                    ans.append([index, d[pre[::-1]]])
+        
+        return ans
