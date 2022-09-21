@@ -1,18 +1,12 @@
 class Solution:
-    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
-        total = sum([val for val in nums if val%2 == 0])
+     def sumEvenAfterQueries(self, A, queries):
+        S = sum(x for x in A if x % 2 == 0)
         ans = []
-        for value, index in queries:
-            if nums[index]%2 == 1:
-                nums[index]+=value
-                if (nums[index])%2 == 0:
-                    total += nums[index]
-                ans.append(total)
-            else:
-                total -= nums[index]
-                nums[index] += value
-                if nums[index]%2 == 0:
-                    total += nums[index]
-                ans.append(total)
-                
+
+        for x, k in queries:
+            if A[k] % 2 == 0: S -= A[k]
+            A[k] += x
+            if A[k] % 2 == 0: S += A[k]
+            ans.append(S)
+
         return ans
