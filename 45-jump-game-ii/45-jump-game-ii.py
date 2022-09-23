@@ -1,18 +1,12 @@
 class Solution:
     def jump(self, nums: List[int]) -> int:
-        dp = {len(nums)-1: 0}
-        last = len(nums)-1
+        if len(nums) <= 1: return 0
+        l = 0
+        r = nums[0]
+        count = 1
+        while r < len(nums)-1:
+            count += 1
+            temp = max([nums[i]+i for i in range(l, r+1)])
+            l, r = r, temp
         
-        for i in range(len(nums)-2, -1, -1):
-            if i+nums[i] >= last:
-                min_ = float('inf')
-                for j in range(i+nums[i], i, -1):
-                    if j < len(nums) and dp[j] != -1:
-                        min_ = min(min_, dp[j])
-                dp[i] = min_+1
-                last = i
-            else:
-                dp[i] = -1
-        return dp[0]
-            
-            
+        return count
