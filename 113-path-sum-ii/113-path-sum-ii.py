@@ -13,13 +13,15 @@ class Solution:
             if not node:
                 return
             
+            total_sum += node.val
+            path.append(node.val)
             if not node.right and not node.left:
-                if total_sum + node.val == targetSum:
-                    arr.append(path+[node.val])
-                    return
+                if total_sum == targetSum:
+                    arr.append(path[::])
             
-            dfs(node.left, total_sum+node.val, path+[node.val])
-            dfs(node.right, total_sum+node.val, path+[node.val])
+            dfs(node.left, total_sum, path)
+            dfs(node.right, total_sum, path)
+            path.pop()
             
             return
         
