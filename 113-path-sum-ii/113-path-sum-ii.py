@@ -12,6 +12,7 @@ class Solution:
             nonlocal arr
             if not node:
                 return
+            
             if not node.right and not node.left:
                 if total_sum + node.val == targetSum:
                     arr.append(path+[node.val])
