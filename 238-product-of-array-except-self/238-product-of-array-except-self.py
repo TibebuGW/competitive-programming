@@ -1,19 +1,17 @@
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        d = defaultdict(list)
-        total = 1
-        total_without_zero = 1
-        for i in range(len(nums)):
-            d[nums[i]].append(i)
-            total *= nums[i]
-            if nums[i]:
-                total_without_zero *= nums[i]
+        pre = [nums[0]]
         
-        if len(d[0]) > 1:
-            return [0]*len(nums)
-        elif len(d[0]) == 1:
-            return [0]*d[0][0] + [total_without_zero] + [0]*(len(nums)-d[0][0]-1)
-        else:
-            for i in range(len(nums)):
-                nums[i] = total//nums[i]
-            return nums
+        for i in range(1, len(nums)):
+            pre.append(pre[-1]*nums[i])
+        
+        var = 1
+        
+        for i in range(len(nums)-1,-1,-1):
+            if i == 0:
+                pre[i] = 1*var
+            else:
+                pre[i] = pre[i-1]*var
+                var *= nums[i]
+    
+        return pre
