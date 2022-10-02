@@ -1,14 +1,13 @@
 class Solution:
-    def numRollsToTarget(self, d: int, f: int, target: int) -> int:
-        memo = {}
-        def dp(d, target):
-            if d == 0:
-                return 0 if target > 0 else 1
-            if (d, target) in memo:
-                return memo[(d, target)]
-            to_return = 0
-            for k in range(max(0, target-f), target):
-                to_return += dp(d-1, k)
-            memo[(d, target)] = to_return
-            return to_return
-        return dp(d, target) % (10**9 + 7)
+    def numRollsToTarget(self, n: int, k: int, target: int) -> int:
+        dp = [[0 for t in range(target + 1)] for i in range(n + 1)]
+        dp[0][0] = 1
+        M = 10**9 + 7
+        for i in range(1, n + 1):
+            s = dp[i - 1][0]
+            for t in range(1, target + 1):
+                if t > k:
+                    s = (s - dp[i - 1][t - k - 1]) % M
+                dp[i][t] = s
+                s = (s + dp[i - 1][t]) % M
+        return dp[n][target]
