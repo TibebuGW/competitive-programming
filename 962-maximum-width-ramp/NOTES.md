@@ -1,4 +1,1 @@
-Takeaways from two pointer solution:
-* one thing to learn is we can iterate from right to left and for each element we can figure out the greater or equal to element in the right direction. that's what the "arr" is for
-* the idea is for each element we have, in the "arr" array, the elements greater or equal to it and we can see that until the index where the value in arr is less than it. that point implies that the element we picked from nums has a rightmost limit at that point. and the numbers that come after that "num" element, if they are greater than the rightmost "arr" limit, they can be skipped as they also have that rightmost limit. but for the elements that are smaller, they could extend further to the right.
 ​
