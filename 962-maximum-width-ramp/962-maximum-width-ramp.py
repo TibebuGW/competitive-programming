@@ -15,7 +15,7 @@ class Solution:
                 l += 1
             
             ans = max(ans, r-l)
-            print(ans)
+            # print(ans)
             r += 1
         
         return ans
