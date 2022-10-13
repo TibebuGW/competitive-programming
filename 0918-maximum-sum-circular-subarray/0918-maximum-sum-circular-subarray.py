@@ -44,6 +44,6 @@ class Solution:
             right_end.append(right_max)
         right_end = right_end[::-1]
         max_ = float('-inf')
-        for i in range(len(nums)-2):
+        for i in range(len(nums)-1):
             max_ = max(left_end[i]+right_end[i+1], max_)
         return max(solve(0, len(nums)-1), max_)
