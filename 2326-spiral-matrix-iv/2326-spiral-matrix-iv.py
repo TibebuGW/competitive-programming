@@ -6,43 +6,23 @@
 class Solution:
     def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
         matrix = [[-1 for _ in range(n)] for _ in range(m)]
-        left = 0
-        right = n-1
-        top = 0
-        bottom = m-1
-        
-        while left <= right and head:
-            for i in range(left, right+1):
-                if head:
-                    matrix[top][i] = head.val
-                    head = head.next
-                else:
-                    break
-            top += 1
+        in_range = lambda row, col: 0 <= row < m and 0 <= col < n
+        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        row = 0
+        col = 0
+        index = 0
+        while head:            
+            matrix[row][col] = head.val
+            head = head.next
             
-            for i in range(top, bottom+1):
-                if head:
-                    matrix[i][right] = head.val
-                    head = head.next
-                else:
-                    break
-            right -= 1
+            row_inc = directions[index][0]
+            col_inc = directions[index][1]
             
-            for i in range(right, left-1, -1):
-                if head:
-                    matrix[bottom][i] = head.val
-                    head = head.next
-                else:
-                    break
-            bottom -= 1
+            if not in_range(row+row_inc, col+col_inc) or matrix[row+row_inc][col+col_inc] != -1:
+                index = (index+1)%len(directions)
+                row_inc = directions[index][0]
+                col_inc = directions[index][1]
             
-            for i in range(bottom, top-1, -1):
-                if head:
-                    matrix[i][left] = head.val
-                    head = head.next
-                else:
-                    break
-            left += 1
-        
+            row += row_inc
+            col += col_inc
         return matrix
-                
