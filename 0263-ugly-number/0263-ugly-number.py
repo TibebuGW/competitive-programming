@@ -1,6 +1,6 @@
 class Solution:
     def isUgly(self, n: int) -> bool:
-        if n == 0:
+        if n <= 0:
             return False
         if n == 1 or n == 2 or n == 3 or n == 5:
             return True
