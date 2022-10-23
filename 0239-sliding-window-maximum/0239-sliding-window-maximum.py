@@ -1,17 +1,20 @@
-from sortedcontainers import SortedList
+from collections import deque
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
-        sorted_list = SortedList()
+        queue_window = deque()
         for i in range(k):
-            sorted_list.add(nums[i])
-        
-        arr = [sorted_list[-1]]
-        
+            while queue_window and nums[queue_window[-1]] < nums[i]:
+                queue_window.pop()
+            queue_window.append(i)
+                
+        arr = [nums[queue_window[0]]]
         l = 0
         for r in range(k, len(nums)):
-            sorted_list.discard(nums[l])
-            sorted_list.add(nums[r])
-            arr.append(sorted_list[-1])
+            if queue_window[0] == l:
+                queue_window.popleft()
+            while queue_window and nums[queue_window[-1]] < nums[r]:
+                queue_window.pop()
+            queue_window.append(r)
+            arr.append(nums[queue_window[0]])
             l += 1
         return arr
-        
