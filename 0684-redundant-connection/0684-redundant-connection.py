@@ -1,7 +1,6 @@
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
         parent = [i for i in range(len(edges))]
-        rank = [1 for i in range(len(edges))]
         
         def find(n):
             while n != parent[n]:
@@ -16,13 +15,11 @@ class Solution:
             if a != b:
                 parent[a] = b
         
-        # print(parent)
-        ans = []
         for start, destination in edges:
             parent_start = find(start-1)
             parent_destination = find(destination-1)
             if parent_start == parent_destination:
-                ans = [start, destination]
+                return [start, destination]
             else:
                 union(start-1, destination-1)
         
