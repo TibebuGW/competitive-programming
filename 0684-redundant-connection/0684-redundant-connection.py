@@ -22,7 +22,9 @@ class Solution:
             parent_start = find(start-1)
             parent_destination = find(destination-1)
             if parent_start == parent_destination:
-                return [start, destination]
+                ans = [start, destination]
             else:
                 union(start-1, destination-1)
         
+        
+        return ans
