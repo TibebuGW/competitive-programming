@@ -16,7 +16,7 @@ class Solution:
             if a != b:
                 parent[a] = b
         
-        print(parent)
+        # print(parent)
         ans = []
         for start, destination in edges:
             parent_start = find(start-1)
