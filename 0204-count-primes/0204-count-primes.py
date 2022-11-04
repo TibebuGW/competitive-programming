@@ -11,9 +11,5 @@ class Solution:
                 for j in range(i*i, n, i):
                     primes[j] = False
             i += 1
-        count = 0
-        for val in primes:
-            if val == True:
-                count += 1
         
-        return count
+        return primes.count(True)
