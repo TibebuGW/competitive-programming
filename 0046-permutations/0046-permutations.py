@@ -1,19 +1,17 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
+        # time complexity = O(N*N!) 
         ans = []
         
-        def backtrack(path, visited):
-            if len(path) == len(nums):
-                ans.append(path[::])
+        def backtrack(index):
+            if index == len(nums):
+                ans.append(nums[:])
                 return
             
-            for i in range(len(nums)):
-                if nums[i] not in visited:
-                    path.append(nums[i])
-                    visited.add(nums[i])
-                    backtrack(path, visited)
-                    path.pop()
-                    visited.remove(nums[i])
+            for i in range(index, len(nums)):
+                nums[i], nums[index] = nums[index], nums[i]
+                backtrack(index+1)
+                nums[i], nums[index] = nums[index], nums[i]
             
-        backtrack([], set())
+        backtrack(0)
         return ans
