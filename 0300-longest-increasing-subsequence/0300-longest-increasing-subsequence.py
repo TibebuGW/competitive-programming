@@ -1,17 +1,28 @@
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        n = len(nums)
+        sub = [nums[0]]
         
-        dp = [1]*n
-        total_max = 1
-        for i in range(n-2, -1, -1):
-            max_ = 0
-            
-            for j in range(i+1, n):
-                if nums[j] > nums[i]:
-                    max_ = max(max_, dp[j])
-            
-            dp[i] = max_ + 1
-            total_max = max(total_max, dp[i])
+        for i in range(1, len(nums)):
+            if nums[i] > sub[-1]:
+                sub.append(nums[i])
+            elif nums[i] == sub[-1]:
+                continue
+            else:
+                best = -1
+                l = 0
+                r = len(sub)-1
+                while l <= r:
+                    mid = (l+r)//2
+                    if sub[mid] > nums[i]:
+                        best = mid
+                        r = mid -1
+                    elif sub[mid] == nums[i]:
+                        best = mid
+                        break
+                    else:
+                        l = mid + 1
+                
+                sub[best] = nums[i]
+            # print(sub)
         
-        return total_max
+        return len(sub)
