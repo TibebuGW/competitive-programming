@@ -1,48 +1,33 @@
-from sortedcontainers import SortedList
+class Segment:
+    
+    def __init__(self, start = -1, end = -1, left = None, right = None):
+        self.start = start
+        self.end = end
+        self.left = left
+        self.right = right
+
 class MyCalendar:
 
     def __init__(self):
-        self.calendar = SortedList()
-
+        self.root = None
+        
+    def insert(self, start, end, node):
+        status = False
+        if not node:
+            return (True, Segment(start, end))
+        elif node.start <= start < node.end or node.start < end <= node.end:
+            return (False, node)
+        elif end <= node.start:
+            status, node.left = self.insert(start, end, node.left)
+            
+        elif start >= node.end:
+            status, node.right = self.insert(start, end, node.right)
+        return (status, node)
+            
+        
     def book(self, start: int, end: int) -> bool:
-        if not len(self.calendar):
-            self.calendar.add((start, end))
-            return True
-        l = 0
-        r = len(self.calendar)-1
-        
-        best = -1
-        while l <= r:
-            mid = (l+r)//2
-            
-            if self.calendar[mid][0] > start:
-                best = mid
-                r = mid - 1
-            elif self.calendar[mid][0] < start:
-                l = mid + 1
-            else:
-                return False
-        
-        if best == -1:
-            if self.calendar[-1][0] <= start < self.calendar[-1][1]:
-                return False
-            else:
-                self.calendar.add((start, end))
-        else:
-            if best == 0:
-                if self.calendar[0][0] < end:
-                    return False
-                else:
-                    self.calendar.add((start, end))
-            else:
-                left_nei = self.calendar[best-1]
-                right_nei = self.calendar[best]
-                if left_nei[1] <= start  and end <= right_nei[0]:
-                    self.calendar.add((start, end))
-                else:
-                    return False
-            
-        return True
+        status, self.root = self.insert(start, end, self.root)
+        return status
 
 # Your MyCalendar object will be instantiated and called as such:
 # obj = MyCalendar()
