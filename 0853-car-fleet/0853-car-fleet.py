@@ -7,7 +7,6 @@ class Solution:
         
         cars.sort()
         stack = []
-        print(cars)
         # (1, 1), (2, 2), (3, 1) 4
         
         for car in cars:
