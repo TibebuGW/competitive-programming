@@ -19,7 +19,7 @@ class Solution:
         dp = [[0 for _ in range(n)] for _ in range(n)]
         
         for l in range(n-1, -1, -1):
-            for r in range(n):
+            for r in range(l, n):
                 if l > r:
                     continue
                 elif l == r:
