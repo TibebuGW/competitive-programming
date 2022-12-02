@@ -5,7 +5,7 @@ class Solution:
         m = destination[1]
         limit = factorial(n+m)//(factorial(n)*factorial(m))
 
-        def rec(path = "", h_count = m, v_count = n, l = 1, r = limit):
+        def rec(path = [], h_count = m, v_count = n, l = 1, r = limit):
             if h_count == v_count == 0:
                 return path
 
@@ -15,13 +15,13 @@ class Solution:
             else:
                 boundary = r - (factorial(h_count + v_count - 1)//(factorial(v_count-1)*factorial(h_count)))
             if l <= k <= boundary:
-                string = path + "H"
-                return rec(string, h_count-1, v_count, l, boundary)
+                path.append('H')
+                return rec(path, h_count-1, v_count, l, boundary)
             else:
-                string = path + "V"
-                return rec(string, h_count, v_count-1, boundary+1, r)
+                path.append('V')
+                return rec(path, h_count, v_count-1, boundary+1, r)
 
 
 
-        return rec()
+        return "".join(rec())
 
