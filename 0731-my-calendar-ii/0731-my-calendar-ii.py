@@ -1,23 +1,21 @@
 class MyCalendarTwo:
 
     def __init__(self):
-        self.map = defaultdict(int)
+        self.single_booking = []
+        self.double_booking = []
 
     def book(self, start: int, end: int) -> bool:
-        self.map[start] += 1
-        self.map[end] -= 1
-        
-        total_events = 0
-        for key in sorted(self.map.keys()):
-            total_events += self.map[key]
-            if total_events == 3:
-                self.map[start] -= 1
-                self.map[end] += 1
+        for temp_start, temp_end in self.double_booking:
+            if temp_start < end and start < temp_end:
                 return False
         
+        for temp_start, temp_end in self.single_booking:
+            if temp_start < end and start < temp_end:
+                self.double_booking.append((max(start, temp_start), min(end, temp_end)))
+        
+        self.single_booking.append((start, end))
         return True
-
-
+    
 # Your MyCalendarTwo object will be instantiated and called as such:
 # obj = MyCalendarTwo()
 # param_1 = obj.book(start,end)
