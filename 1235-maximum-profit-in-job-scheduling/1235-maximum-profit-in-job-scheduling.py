@@ -1,5 +1,7 @@
 class Solution:
     def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
+        # top down doesn't pass
+        
         events = list(zip(startTime, endTime, profit)) 
         events.sort()
         events.append((50001,50002,0))
