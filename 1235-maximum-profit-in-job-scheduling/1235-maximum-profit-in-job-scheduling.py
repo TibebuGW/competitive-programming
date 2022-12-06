@@ -10,13 +10,18 @@ class Solution:
         
         for i in range(n-2, -1 ,-1):
             cur_start, cur_end, cur_profit = events[i]
-            pick = cur_profit
-            for j in range(i + 1, n):
-                start, end, profit = events[j]
-                if start >= cur_end:
-                    pick += dp[j]
-                    break
+            l = i + 1
+            r = n - 1
+            best = n - 1
+            while l <= r:
+                mid = (l+r)//2
+                if events[mid][0] >= cur_end:
+                    r = mid - 1
+                    best = mid
+                else:
+                    l = mid + 1
             
+            pick = cur_profit + dp[best]
             dont_pick = dp[i+1]
             dp[i] = max(pick, dont_pick)
         
