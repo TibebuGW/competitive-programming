@@ -8,15 +8,16 @@ class Solution:
 
         
         queue = [(0, k - 1)]
+        visited = set()
         
         while queue:
-            n = len(queue)
-            for i in range(n):
-                time, node = heappop(queue)
-                for nei, weight in graph[node]:
-                    if time + weight < ans[nei]:
-                        ans[nei] = time + weight
-                        heappush(queue, (ans[nei], nei))
+            time, node = heappop(queue)
+            if node in visited:
+                continue
+            ans[node] = time
+            visited.add(node)
+            for nei, weight in graph[node]:
+                heappush(queue, (time + weight, nei))
         
         result = max(ans)
         return -1 if result == float('inf') else result
