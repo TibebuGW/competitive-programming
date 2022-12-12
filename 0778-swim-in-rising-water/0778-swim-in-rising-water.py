@@ -2,7 +2,7 @@ class Solution:
     def swimInWater(self, grid: List[List[int]]) -> int:
         # the grid is basically an undirected graph where the weight of an edge is the max of the two nodes it connects
         n = len(grid)
-        minimum_time = defaultdict(lambda: float('inf'))
+        minimum_time = defaultdict(lambda: float('inf')) # in the best path to reach node (x, y), we need to wait at least minimum_time[(x, y)] seconds
         minimum_time[(0,0)] = 0
         directions = [[-1, 0], [0, -1], [1, 0], [0, 1]]
         in_range = lambda row, col: 0 <= row < n and 0 <= col < n
