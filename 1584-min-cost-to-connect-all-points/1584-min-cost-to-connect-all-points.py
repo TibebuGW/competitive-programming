@@ -1,43 +1,24 @@
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
-        parent = [i for i in range(len(points))]
-        rank = [1 for i in range(len(points))]
-        result = 0
-        paths = []
-        def find(a):
-            while a != parent[a]:
-                a = parent[a]
-            return a
-        
-        def union(a, b):
-            a = find(a)
-            b = find(b)
-            
-            if a != b:
-                if rank[a] > rank[b]:
-                    parent[b] = a
-                    rank[a] += rank[b]
-                else:
-                    parent[a] = b
-                    rank[b] += rank[a]
-                
         def manhattan_distance(p1, p2):
             return abs(p1[0]-p2[0]) + abs(p1[1]-p2[1])
+        path = [] # path of the minimum spanning tree starting from 0
+        total_cost = 0 # cost of the minimum spanning tree
+        visited = set()
         
-        def connected(p1, p2):
-            return find(p1) == find(p2)
+        queue = [(0, (points[0][0], points[0][1]), (-10**7, -10**7))] # "cost" to reach "node" with "parent"
         
-        for i in range(len(points)-1):
-            for j in range(i+1, len(points)):
-                paths.append((manhattan_distance(points[i], points[j]), i, j))
-                
-        paths.sort(key = lambda x: x[0])
-        
-        for distance, x, y in paths:
-            if not connected(x, y):
-                result += distance
-                union(x, y)
-        
-        # print(paths)
-        return result
+        while queue:
             
+            cost, node, parent = heappop(queue)
+            if node not in visited:
+                visited.add(node)
+                path.append((node, parent))
+                total_cost += cost
+                for p in points:
+                    point = (p[0], p[1])
+                    if point != node and point not in visited:
+                        cur_cost = manhattan_distance(point, node)
+                        heappush(queue, (cur_cost, (point[0], point[1]), node))
+        
+        return total_cost
