@@ -1,7 +1,14 @@
 class Solution:
     def magnificentSets(self, n: int, edges: List[List[int]]) -> int:
+        # Algorithm
+        # First figure out all the connected components
+        # The sum of maximum number of groups in each component is the total answer
+        # A connected component cannot be n-partite if it cannot be bipartite
+        # If one of the components is not bipartite, return -1
+        # After figuring out all the connected components, find the MAXIMUM DEPTH in each connected component
+        # That is the maximum coloring we can apply to the component
+        # Return the sum of all connected components' maximum depths(groups or colorings)
         parent = [i for i in range(n)]
-        rank = [1 for _ in range(n)]
         def find(node):
             if node == parent[node]:
                 return node
@@ -14,10 +21,8 @@ class Solution:
             if parent1 != parent2:
                 if indegree[parent1] < indegree[parent2]:
                     parent[parent2] = parent1
-                    rank[parent1] += rank[parent2]
                 else:
                     parent[parent1] = parent2
-                    rank[parent2] += rank[parent1]
         
         
         graph = defaultdict(list)
