@@ -1,24 +1,39 @@
+class UnionFind:
+    def __init__(self, n):
+        self.parent = [i for i in range(n)]
+        self.total_weight = 0
+    
+    def find(self, node):
+        if node != self.parent[node]:
+            self.parent[node] = self.find(self.parent[node])
+        
+        return self.parent[node]
+    
+    def union(self, node1, node2, weight):
+        parent1 = self.find(node1)
+        parent2 = self.find(node2)
+        
+        if parent1 != parent2:
+            self.parent[parent1] = parent2
+            self.total_weight += weight
+            
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
-        def manhattan_distance(p1, p2):
-            return abs(p1[0]-p2[0]) + abs(p1[1]-p2[1])
-        path = [] # path of the minimum spanning tree starting from 0
-        total_cost = 0 # cost of the minimum spanning tree
-        visited = set()
+        def manhattanDistance(p1, p2):
+            return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
         
-        queue = [(0, (points[0][0], points[0][1]), (-10**7, -10**7))] # "cost" to reach "node" with "parent"
+        edges = []
+        for i in range(len(points)):
+            for j in range(len(points)):
+                if i != j:
+                    edges.append((manhattanDistance(points[i], points[j]), i, j))
         
-        while queue:
-            
-            cost, node, parent = heappop(queue)
-            if node not in visited:
-                visited.add(node)
-                path.append((node, parent))
-                total_cost += cost
-                for p in points:
-                    point = (p[0], p[1])
-                    if point != node and point not in visited:
-                        cur_cost = manhattan_distance(point, node)
-                        heappush(queue, (cur_cost, (point[0], point[1]), node))
+        edges.sort()
+                    
+        uf = UnionFind(len(points))
         
-        return total_cost
+        for weight, i, j in edges:
+            uf.union(i, j, weight)
+        
+        
+        return uf.total_weight
