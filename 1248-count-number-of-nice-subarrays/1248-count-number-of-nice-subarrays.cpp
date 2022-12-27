@@ -11,23 +11,28 @@ public:
             x &= 1;
         }
         int last = 0;
-        queue<int> q;
         int r = 0;
+        int l = 0;
         int ans = 0;
+        int cnt = 0;
         while (r < nums.size()) {
             if(nums[r]) {
-                q.push(r);
+                cnt++;
             }
             r++;
-            
-            if(q.size() > k) {
-                int n = q.front();
-                last = n+1;
-                q.pop();
+            while(cnt > k) {
+                if(nums[l]) {
+                    cnt--;
+                }
+                l++;
+                last = l;
+            }
+            while(nums[last] == 0) {
+                last++;
             }
             
-            if(q.size() == k) {
-                ans += (q.front() - last) + 1;
+            if(cnt == k) {
+                ans += (last - l) + 1;
             }
         }
         return ans;
