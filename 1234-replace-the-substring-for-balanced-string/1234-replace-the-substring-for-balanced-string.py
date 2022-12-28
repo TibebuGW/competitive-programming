@@ -17,26 +17,23 @@ class Solution:
         
         if len(target_dict) == 0:
             return 0
-        # print(target_dict)
+        
+        def is_valid():
+            for char in target_dict:
+                if target_dict[char] > s_dict[char]:
+                    return False
+            return True
+        
         l = 0
-        s_dict = {"W": 0, "Q": 0, "E": 0, "R": 0}
+        s_dict = defaultdict(int)
         for r in range(len(s)):
             s_dict[s[r]] += 1
             
-            flag = True
-            for char in s_dict:
-                if target_dict[char] > s_dict[char]:
-                    flag = False
-                    break
-                
-            if flag:
-                while l <= r:
-                    ans = min(ans, r - l + 1)
-                    s_dict[s[l]] -= 1
-                    if target_dict[s[l]] > s_dict[s[l]]:
-                        l += 1
-                        break
-                    l += 1
-        
-        return ans if ans != float('inf') else 0
+            while is_valid():
+                ans = min(ans, r - l + 1)
+                s_dict[s[l]] -= 1
+                l += 1
+            
+            
+        return ans
             
