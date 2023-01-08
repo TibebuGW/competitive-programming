@@ -5,12 +5,14 @@ class Solution:
         @lru_cache(None)
         def dp(l = 0, r = n - 1):
             
-            if l >= r:
+            if l == r:
+                return 1
+            if l > r:
                 return 0
             
             if s[l] == s[r]:
-                return dp(l + 1, r - 1)
+                return 2 + dp(l + 1, r - 1)
             
-            return 1 + min(dp(l + 1, r), dp(l, r - 1))
+            return max(dp(l + 1, r), dp(l, r - 1))
         
-        return dp()
+        return n - dp()
