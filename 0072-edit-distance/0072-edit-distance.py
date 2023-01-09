@@ -5,20 +5,23 @@ class Solution:
         
         
         @lru_cache(None)
-        def dp(idx1 = 0, idx2 = 0):
+        def dp(idx1 = m, idx2 = n):
             
-            if idx1 == m:
-                return n - idx2
+            if idx1 == 0:
+                return idx2
             
-            if idx2 == n:
-                return m - idx1
+            if idx2 == 0:
+                return idx1
             
-            if word1[idx1] == word2[idx2]:
-                return dp(idx1 + 1, idx2 + 1)
+            if idx2 <= 0:
+                return max(idx1, 0)
             
-            insertion = dp(idx1, idx2 + 1)
-            deletion = dp(idx1 + 1, idx2)
-            replacement = dp(idx1 + 1, idx2 + 1)
+            if word1[idx1 - 1] == word2[idx2 - 1]:
+                return dp(idx1 - 1, idx2 - 1)
+            
+            insertion = dp(idx1, idx2 - 1)
+            deletion = dp(idx1 - 1, idx2)
+            replacement = dp(idx1 - 1, idx2 - 1)
             
             return min(insertion, deletion, replacement) + 1
         
