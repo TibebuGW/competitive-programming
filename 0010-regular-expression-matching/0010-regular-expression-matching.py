@@ -9,12 +9,10 @@ class Solution:
             if i == -1:
                 if j == -1:
                     return True
-                count = 0
-                for idx in range(j + 1):
-                    if p[idx] == "*":
-                        count += 1
-                return int(math.ceil((j+1)/2)) == count
-            
+                if p[j] == "*":
+                    return dp(i, j - 2)
+                else:
+                    return False
             if j == -1:
                 return False
             
