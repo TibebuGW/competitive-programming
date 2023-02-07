@@ -1,20 +1,27 @@
 class Solution:
     def racecar(self, target: int) -> int:
-        dp = [float('inf')] * (target + 1)
+        queue = deque([(0, 1)])
+        step = 0
+        visited = set({(0, 1)})
         
-        for i in range(1, target + 1):
-            forward = 1
-            while (1 << forward) - 1 < 2 * i:
-                j = (1 << forward) - 1
-                if i == j:
-                    dp[i] = forward  
-                elif i > j:
-                    for back in range(forward):
-                        k = (1 << back) - 1
-                        dp[i] = min(dp[i], forward + 1 + back + 1 + dp[i - j + k]) 
-                else:
-                    dp[i] = min(dp[i], forward + 1 + dp[j - i])  
+        while queue:
+            n = len(queue)
+            
+            for _ in range(n):
+                pos, speed = queue.popleft()
+                if pos == target:
+                    return step
                 
-                forward += 1
+                if (pos + speed, speed*2) not in visited:
+                    visited.add((pos + speed, speed*2))
+                    queue.append((pos + speed, speed*2))
+                if speed > 0:
+                    if (pos, -1) not in visited:
+                        queue.append((pos, -1))
+                        visited.add((pos, -1))
+                else:
+                    if (pos, 1) not in visited:
+                        queue.append((pos, 1))
+                        visited.add((pos, 1))
         
-        return dp[target]
+            step += 1
