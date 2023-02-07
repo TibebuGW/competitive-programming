@@ -16,11 +16,11 @@ class Solution:
                     visited.add((pos + speed, speed*2))
                     queue.append((pos + speed, speed*2))
                 if speed > 0:
-                    if (pos, -1) not in visited:
+                    if (pos, -1) not in visited and pos + speed > target:
                         queue.append((pos, -1))
                         visited.add((pos, -1))
                 else:
-                    if (pos, 1) not in visited:
+                    if (pos, 1) not in visited and pos + speed < target:
                         queue.append((pos, 1))
                         visited.add((pos, 1))
         
