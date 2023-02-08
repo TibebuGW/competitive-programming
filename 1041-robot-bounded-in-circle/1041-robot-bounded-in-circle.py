@@ -1,13 +1,20 @@
 class Solution:
     def isRobotBounded(self, instructions: str) -> bool:
-        di = (0,1)
-        x,y = 0,0
-        for instruction in instructions:
-            if instruction == 'G':
-                x,y = x+di[0],y+di[1]
-            elif instruction == 'L':
-                di = (-di[1],di[0])
+        pos = [0, 0]
+        direction = [[0, 1], [-1, 0], [0, -1], [1, 0]]
+        i = 0
+        
+        
+        for char in instructions:
+            if char == "G":
+                pos[0] += direction[i][0]
+                pos[1] += direction[i][1]
+            elif char == "L":
+                i = (i + 1)%4
             else:
-                di = (di[1],-di[0])
-            
-        return (x==0 and y==0) or di!=(0,1)
+                if i == 0:
+                    i = 3
+                else:
+                    i -= 1
+        
+        return pos == [0, 0] or i != 0
