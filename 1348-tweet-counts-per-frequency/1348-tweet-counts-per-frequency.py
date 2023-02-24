@@ -1,15 +1,14 @@
-from sortedcontainers import SortedList
 class TweetCounts:
 
     def __init__(self):
-        self.main = defaultdict(SortedList)
+        self.main = defaultdict(list)
         self.second = {'minute': 59, 'hour': 3599, 'day': 86399}
 
     def recordTweet(self, tweetName: str, time: int) -> None:
-        self.main[tweetName].add(time)
+        self.main[tweetName].append(time)
 
     def getTweetCountsPerFrequency(self, freq: str, tweetName: str, startTime: int, endTime: int) -> List[int]:
-        arr = self.main[tweetName]
+        arr = sorted(self.main[tweetName])
         chunks = []
         time = startTime
         while time <= endTime:
