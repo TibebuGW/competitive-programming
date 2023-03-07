@@ -1,16 +1,16 @@
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
+        n = len(nums)
+        mask = (1 << n) - 1
+        
         ans = [[]]
         
-        def backtrack(path, index):
-            if index == len(nums):
-                return
-            
-            for i in range(index, len(nums)):
-                path.append(nums[i])
-                ans.append(path[:])
-                backtrack(path, i+1)
-                path.pop()
+        while mask:
+            cur = []
+            for i in range(n):
+                if mask & (1 << i):
+                    cur.append(nums[i])
+            mask -= 1
+            ans.append(cur)
         
-        backtrack([], 0)
         return ans
