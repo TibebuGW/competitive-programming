@@ -3,7 +3,7 @@ class Solution:
         bit_array = []
         
         for word in arr:
-            bit_word = 1 << 27
+            bit_word = 1 << 26
             if len(set(word)) != len(word):
                 continue
             for char in word:
@@ -11,7 +11,7 @@ class Solution:
             bit_array.append(bit_word)
         
         @lru_cache(None)
-        def dp(index = 0, mask = 1 << 27):
+        def dp(index = 0, mask = 1 << 26):
             if index == len(bit_array):
                 count = 0
                 for _ in range(26):
@@ -31,7 +31,7 @@ class Solution:
                 temp >>= 1
                 cur >>= 1
             else:
-                take = dp(index + 1, (1 << 27) ^ (mask ^ bit_array[index]))
+                take = dp(index + 1, (1 << 26) ^ (mask ^ bit_array[index]))
             
             return max(take, not_take)
         
