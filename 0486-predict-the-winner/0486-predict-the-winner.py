@@ -2,6 +2,7 @@ class Solution:
     def PredictTheWinner(self, nums: List[int]) -> bool:
         
         # figure out the maximum possible score player 1 can get.
+        @lru_cache(None)
         def recursion(left, right):
             
             # base case
