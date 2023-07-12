@@ -8,18 +8,6 @@ class Solution:
         second_part = nums[n:]
         total_sum = sum(nums)
         goal = total_sum/2
-        # print(goal)
-        
-#         def subsetSumGenerator(index, limit, total, count, dct):
-#             if index == limit:
-#                 dct[count].add(total)
-#                 return
-            
-#             subsetSumGenerator(index + 1, limit, total, count, dct)
-#             subsetSumGenerator(index + 1, limit, total + nums[index], count + 1, dct)
-        
-        # subsetSumGenerator(0, n, 0, 0, dict_A)
-        # subsetSumGenerator(n, m, 0, 0, dict_B)
         
         for k in range(n + 1):
             dict_A[k] = set(map(sum, combinations(first_part, k)))
@@ -30,8 +18,6 @@ class Solution:
             dict_B[key].sort()
         
         ans = float('inf')
-        # print(dict_A)
-        # print(dict_B)
         
         for first_key, first_list in dict_A.items():
             for first_list_number in first_list:
