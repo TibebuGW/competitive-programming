@@ -1,14 +1,13 @@
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
-        left = writer = right = 0
+        visited = defaultdict(int)
         
-        while right < len(nums):
-            
-            while right < len(nums) and nums[left] == nums[right]:
-                right += 1
-            
-            nums[writer] = nums[left]
-            left = right
-            writer += 1
+        i = 0
+        for j in range(len(nums)):
+            if visited[nums[j]] == 0:
+                nums[i] = nums[j]
+                i += 1
+            visited[nums[j]] += 1
         
-        return writer
+        return len(visited)
+        
