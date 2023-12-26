@@ -1,33 +1,30 @@
 import random
+
 class RandomizedSet:
 
     def __init__(self):
         self.arr = []
-        self.set = set()
-        self.dict = defaultdict(list)
+        self.dict = {}
 
     def insert(self, val: int) -> bool:
-        present = val in self.set
+        present = val in self.dict
         if not present:
-            self.set.add(val)
             self.arr.append(val)
-            self.dict[val].append(len(self.arr) - 1)
+            self.dict[val] = len(self.arr) - 1
         return not present
 
     def remove(self, val: int) -> bool:
-        present = val in self.set
+        present = val in self.dict
         if present:
-            self.set.remove(val)
-            swapped_num = self.arr[-1]
-            self.arr[-1], self.arr[self.dict[val][0]] = self.arr[self.dict[val][0]], self.arr[-1]
-            swapped_index = self.dict[val].pop()
+            index_to_swap = self.dict[val]
+            self.dict[self.arr[-1]] = index_to_swap
+            self.arr[index_to_swap], self.arr[-1] = self.arr[-1], self.arr[index_to_swap]
             self.arr.pop()
-            self.dict[swapped_num] = [swapped_index]
+            del self.dict[val]
         return present
 
     def getRandom(self) -> int:
-        rand_int = random.randint(0, len(self.arr) - 1)
-        return self.arr[rand_int]
+        return random.choice(self.arr)
 
 
 # Your RandomizedSet object will be instantiated and called as such:
