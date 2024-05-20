@@ -1,12 +1,21 @@
 class Solution:
     def numberOfSubarrays(self, nums: List[int], k: int) -> int:
-        d = defaultdict(int)
-        d[0] = 1
-        prefix = 0
         ans = 0
-        for num in nums:
-            prefix += num%2
-            ans += d[prefix - k]
-            d[prefix] += 1
+        odds = 0
         
+        l = 0
+        for r in range(len(nums)):
+            if nums[r] % 2:
+                odds += 1
+                
+            if odds > k:
+                l = first_odd_index + 1
+                odds -= 1
+            if odds == k:
+                first_odd_index = l
+                while nums[first_odd_index] % 2 == 0:
+                    first_odd_index += 1
+                
+                ans += first_odd_index - l + 1
+                
         return ans
