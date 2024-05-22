@@ -1,18 +1,17 @@
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
-        left = writer = right = 0
+        writer = 0
+        runner = 0
         
-        while right < len(nums):
+        while runner < len(nums):
+            first_index = runner
+            while runner < len(nums) and nums[runner] == nums[first_index]:
+                runner += 1
             
-            while right < len(nums) and nums[left] == nums[right]:
-                right += 1
-            
-            if right-left >= 2:
-                nums[writer] = nums[left]
-                writer += 1
-                
-            nums[writer] = nums[left]
+            nums[writer] = nums[first_index]
             writer += 1
-            left = right
+            if runner - first_index >= 2:
+                nums[writer] = nums[first_index]
+                writer += 1
         
         return writer
