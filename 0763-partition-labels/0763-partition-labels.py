@@ -1,24 +1,15 @@
 class Solution:
     def partitionLabels(self, s: str) -> List[int]:
-        intervals = {}
+        ans = []
+        start = 0
+        end = 0
+        last_indices = {char: index for index, char in enumerate(s)}
         
-        for index, char in enumerate(s):
-            if char in intervals:
-                intervals[char][1] = index
-            else:
-                intervals[char] = [index, index]
-        
-        arr = [interval for char, interval in intervals.items()]
-        arr.sort()
-        merged_intervals = [arr[0]]
-        for i in range(1, len(arr)):
-            last_interval_start, last_interval_end = merged_intervals[-1]
-            cur_interval_start, cur_interval_end = arr[i]
+        for i in range(len(s)):
+            end = max(end, last_indices[s[i]])
             
-            if last_interval_start <= cur_interval_start <= last_interval_end:
-                merged_intervals[-1][0] = min(last_interval_start, cur_interval_start)
-                merged_intervals[-1][1] = max(last_interval_end, cur_interval_end)
-            else:
-                merged_intervals.append(arr[i])
-        
-        return [r - l + 1 for l, r in merged_intervals]
+            if i == end:
+                ans.append(end - start + 1)
+                start = i + 1
+                
+        return ans
