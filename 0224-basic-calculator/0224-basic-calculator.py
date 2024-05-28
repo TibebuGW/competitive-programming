@@ -1,54 +1,63 @@
 class Solution:
-    def applyOperation(self, num1, num2, op):
-        if op == "+": return num1 + num2
-        else: return num1 - num2
-        
     def calculate(self, s: str) -> int:
-        values = []
-        ops = []
-        expression = []
-        for char in s:
-            if char != " ":
-                expression.append(char)
+        stack = []
         
         i = 0
-        while i < len(expression):
-            char = expression[i]
-            if char == "+" or char == "-":
-                if char == "-" and (i == 0 or expression[i-1] == "("):
-                    values.append(0)
-                while ops and (ops[-1] == "+" or ops[-1] == "-"):
-                    val2 = values.pop()
-                    val1 = values.pop()
-                    op = ops.pop()
-                    values.append(self.applyOperation(val1, val2, op))
-                ops.append(char)
-            elif char.isdigit():
-                val = int(char)
+        while i < len(s):
+            if s[i] == " ":
                 i += 1
-                while i < len(expression) and expression[i].isdigit():
-                    val = (val*10) + int(expression[i])
+                continue
+            elif s[i].isdigit():
+                temp = []
+                while i < len(s) and s[i].isdigit():
+                    temp.append(s[i])
                     i += 1
                 i -= 1
-                values.append(val)
-            elif char == "(":
-                ops.append(char)
+                stack.append(int("".join(temp)))
             else:
-                
-                while ops and ops[-1] != "(":
-                    val2 = values.pop()
-                    val1 = values.pop()
-                    op = ops.pop()
-                    values.append(self.applyOperation(val1, val2, op))
-                
-                ops.pop()
-            
+                if s[i] == ")":
+                    digit_stack = []
+                    operator_stack = []
+                    while stack and stack[-1] != "(":
+                        if stack[-1] == "+" or stack[-1] == "-":
+                            operator_stack.append(stack.pop())
+                        else:
+                            digit_stack.append(stack.pop())
+                    stack.pop()
+                    
+                    if len(digit_stack) == len(operator_stack):
+                        digit_stack.append(0)
+                    while operator_stack:
+                        num1 = digit_stack.pop()
+                        num2 = digit_stack.pop()
+                        if operator_stack[-1] == "+":
+                            digit_stack.append(num1 + num2)
+                        else:
+                            digit_stack.append(num1 - num2)
+                        operator_stack.pop()
+                    stack.append(digit_stack[0])
+                    
+                else:
+                    stack.append(s[i])
+        
             i += 1
         
-        while ops:
-            val2 = values.pop()
-            val1 = values.pop()
-            op = ops.pop()
-            values.append(self.applyOperation(val1, val2, op))
+        digit_stack = []
+        operator_stack = []
+        while stack:
+            if stack[-1] == "+" or stack[-1] == "-":
+                operator_stack.append(stack.pop())
+            else:
+                digit_stack.append(stack.pop())
         
-        return values[0]
+        if len(digit_stack) == len(operator_stack):
+            digit_stack.append(0)
+                
+        while operator_stack:
+            if operator_stack[-1] == "+":
+                digit_stack.append(digit_stack.pop() + digit_stack.pop())
+            else:
+                digit_stack.append(digit_stack.pop() - digit_stack.pop())
+            operator_stack.pop()
+        
+        return digit_stack[0]
