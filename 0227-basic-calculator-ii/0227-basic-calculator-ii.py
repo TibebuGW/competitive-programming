@@ -1,9 +1,13 @@
 class Solution:
     def calculate(self, s: str) -> int:
+        def applyOp(num1, num2, op):
+            if op == "+": return num1 + num2
+            elif op == "-": return num1 - num2
+            elif op == "*": return num1 * num2
+            else: return num1 // num2
+        
         operator_stack = deque([])
         digit_stack = deque([])
-        if s[0] == "-":
-            digit_stack.append(0)
         
         i = 0
         while i < len(s):
@@ -21,11 +25,7 @@ class Solution:
                 if operator_stack and (operator_stack[-1] == "*" or operator_stack[-1] == "/"):
                     num1 = digit_stack.pop()
                     num2 = digit_stack.pop()
-                    if operator_stack[-1] == "*":
-                        digit_stack.append(num1 * num2)
-                    else:
-                        digit_stack.append(num2 // num1)
-                    operator_stack.pop()
+                    digit_stack.append(applyOp(num2, num1, operator_stack.pop()))
             else:
                 operator_stack.append(s[i])
             
@@ -34,12 +34,6 @@ class Solution:
         while operator_stack:
             num1 = digit_stack.popleft()
             num2 = digit_stack.popleft()
-            if operator_stack[0] == "+":
-                digit_stack.appendleft(num1 + num2)
-            else:
-                digit_stack.appendleft(num1 - num2)
-            operator_stack.popleft()
-        
-        assert(len(digit_stack) == 1)
+            digit_stack.appendleft(applyOp(num1, num2, operator_stack.popleft()))
         
         return digit_stack[0]
