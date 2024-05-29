@@ -1,23 +1,23 @@
 class Solution:
-    def largestRectangleArea(self, arr: List[int]) -> int:
-        left = [-1]*(len(arr))
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        ans = 0
+        left_to_right = [len(heights) - 1 for i in range(len(heights))]
+        right_to_left = [0 for i in range(len(heights))]
+        
         stack = []
-        for i in range(len(arr)-1, -1, -1):
-            while stack and arr[stack[-1]] > arr[i]:
-                index = stack.pop()
-                left[index] = i
+        for i in range(len(heights)):
+            while stack and heights[stack[-1]] > heights[i]:
+                left_to_right[stack.pop()] = i - 1
+            stack.append(i)
+        
+        stack = []
+        for i in range(len(heights) - 1, -1, -1):
+            while stack and heights[stack[-1]] > heights[i]:
+                right_to_left[stack.pop()] = i + 1
             stack.append(i)
             
-        right = [len(arr)]*(len(arr))
-        stack = []
-        for i in range(len(arr)):
-            while stack and arr[stack[-1]] > arr[i]:
-                index = stack.pop()
-                right[index] = i
-            stack.append(i)
+        for i in range(len(heights)):
+            width = left_to_right[i] - right_to_left[i] + 1
+            ans = max(ans, width * heights[i])
         
-        max_ans = 0
-        for i in range(len(arr)):
-            max_ans = max(max_ans, arr[i]*(right[i] - left[i] - 1))
-        
-        return max_ans
+        return ans
