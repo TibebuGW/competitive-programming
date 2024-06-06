@@ -1,33 +1,21 @@
-from collections import deque
 class Solution:
     def canReach(self, arr: List[int], start: int) -> bool:
+        in_range = lambda x: 0 <= x < len(arr)
         visited = set()
-        visited.add(start)
-        queue = deque([start])
-        in_bound = lambda index: 0 <= index < len(arr)
         
-        if arr[start] == 0:
-            return True
-        
-        while queue:
-            n = len(queue)
+        @lru_cache(None)
+        def dfs(index = start):
+            nonlocal visited
+            if not in_range(index) or index in visited:
+                return False
             
-            for i in range(n):
-                node = queue.popleft()
-                if in_bound(node+arr[node]):
-                    if arr[node+arr[node]] == 0:
-                        return True
-                    else:
-                        if node+arr[node] not in visited:
-                            visited.add(node+arr[node])
-                            queue.append(node+arr[node])
-                
-                if in_bound(node-arr[node]):
-                    if arr[node-arr[node]] == 0:
-                        return True
-                    else:
-                        if node-arr[node] not in visited:
-                            visited.add(node-arr[node])
-                            queue.append(node-arr[node])
+            if arr[index] == 0:
+                return True
+            
+            visited.add(index)
+            left = dfs(index - arr[index])
+            right = dfs(index + arr[index])
+            visited.remove(index)
+            return left or right
         
-        return False
+        return dfs()
