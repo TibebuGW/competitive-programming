@@ -1,66 +1,49 @@
 class TweetCounts:
 
     def __init__(self):
-        self.main = defaultdict(list)
-        self.second = {'minute': 59, 'hour': 3599, 'day': 86399}
+        self.d = defaultdict(list)
 
     def recordTweet(self, tweetName: str, time: int) -> None:
-        self.main[tweetName].append(time)
+        self.d[tweetName].append(time)
 
     def getTweetCountsPerFrequency(self, freq: str, tweetName: str, startTime: int, endTime: int) -> List[int]:
-        arr = sorted(self.main[tweetName])
-        chunks = []
-        time = startTime
-        while time <= endTime:
-            chunks.append((time, min(endTime, time + self.second[freq])))
-            time += self.second[freq] + 1
-            
-        # print(chunks)
-        ans = []
-        for start, end in chunks:
-            left = self.upperBinarySearch(arr, start)
-            right = self.lowerBinarySearch(arr, end)
-            if left != len(arr) and right != -1:
-                ans.append(right - left + 1)
-            else:
-                ans.append(0)
+        chunks = self.getChunks(startTime, endTime, freq)
+        ans = [0 for _ in range(len(chunks))]
+        for time in self.d[tweetName]:
+            if startTime <= time <= endTime:
+                index = self.getIndex(chunks, time)
+                ans[index] += 1
         
         return ans
     
-    def upperBinarySearch(self, arr, start):
-        l = 0
-        r = len(arr) - 1
+    def getChunks(self, start, end, chunkType):
+        ans = []
+        startingTime = start
+        adder = 59
+        if chunkType == "hour":
+            adder = 3599
+        elif chunkType == "day":
+            adder = 86399
         
-        best = len(arr)
-        while l <= r:
-            mid = (l + r) // 2
-            if arr[mid] == start:
-                return mid
-            elif arr[mid] < start:
-                l = mid + 1
-            else:
-                best = mid
-                r = mid - 1
+        while startingTime <= end:
+            ans.append([startingTime, min(end, startingTime + adder)])
+            startingTime += adder + 1
         
-        return best
+        
+        return ans
     
-    def lowerBinarySearch(self, arr, end):
+    def getIndex(self, chunks, time):
         l = 0
-        r = len(arr) - 1
-        
-        best = -1
+        r = len(chunks) - 1
         while l <= r:
             mid = (l + r) // 2
-            if arr[mid] == end:
+            if chunks[mid][0] <= time <= chunks[mid][1]:
                 return mid
-            elif arr[mid] > end:
+            elif time < chunks[mid][0]:
                 r = mid - 1
             else:
-                best = mid
                 l = mid + 1
         
-        return best
-
 # Your TweetCounts object will be instantiated and called as such:
 # obj = TweetCounts()
 # obj.recordTweet(tweetName,time)
