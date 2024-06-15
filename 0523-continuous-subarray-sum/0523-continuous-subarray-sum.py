@@ -1,16 +1,16 @@
 class Solution:
     def checkSubarraySum(self, nums: List[int], k: int) -> bool:
-        prefix = [0]
-        for num in nums:
-            prefix.append(num+prefix[-1])
+        d = {0: -1}
+        prefix = 0
         
-        d = {0:0}
         
-        for i in range(1,len(prefix)):
-            if prefix[i]%k not in d:
-                d[prefix[i]%k] = i
-            else:
-                if d[prefix[i]%k] < i-1:
+        for i in range(len(nums)):
+            prefix += nums[i]
+            cur = prefix % k
+            if cur in d:
+                if i - d[cur] >= 2:
                     return True
-        # print(d)
+            else:
+                d[cur] = i
+        
         return False
