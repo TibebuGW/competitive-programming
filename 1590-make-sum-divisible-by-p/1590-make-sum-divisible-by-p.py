@@ -29,4 +29,4 @@ class Solution:
             
             d[cur] = i
         
-        return ans if ans != float('inf') and ans != len(nums) else -1
+        return ans if ans != len(nums) else -1
