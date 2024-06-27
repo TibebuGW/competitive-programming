@@ -1,26 +1,23 @@
 class Solution:
     def numSquares(self, n: int) -> int:
-        arr = []
-        i = 1
-        square_num = 1
-        while square_num <= n:
-            arr.append(square_num)
-            i += 1
-            square_num = i ** 2
+        squares = []
+        num = 1
+        while num**2 <= n:
+            squares.append(num**2)
+            num += 1
         
         queue = deque([n])
-        level = 1
+        level = 0
         
         while queue:
-            length = len(queue)
-            while length:
+            n = len(queue)
+            for i in range(n):
                 cur = queue.popleft()
-
-                for i in range(len(arr) - 1, -1, -1):
-                    if cur - arr[i] == 0:
-                        return level
-                    elif cur - arr[i] >= 0:
-                        queue.append(cur - arr[i])
-                length -= 1
-                    
+                for j in range(len(squares) - 1, -1, -1):
+                    num = squares[j]
+                    res = cur - num
+                    if res == 0:
+                        return level + 1
+                    if res > 0:
+                        queue.append(res)
             level += 1
