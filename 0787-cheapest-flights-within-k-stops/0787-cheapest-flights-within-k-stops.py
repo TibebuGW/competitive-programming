@@ -1,4 +1,3 @@
-from heapq import heappop, heappush
 class Solution:
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
         ans = [float('inf')]*n # cost
@@ -18,4 +17,4 @@ class Solution:
                             heappush(queue, (stops + 1, ans[nei], nei))
                         
                     
-        return ans[dst] if ans[dst] != float('inf') else -1 
+        return ans[dst] if ans[dst] != float('inf') else -1
