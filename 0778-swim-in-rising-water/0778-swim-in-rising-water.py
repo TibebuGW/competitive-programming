@@ -1,21 +1,24 @@
 class Solution:
     def swimInWater(self, grid: List[List[int]]) -> int:
-        # the grid is basically an undirected graph where the weight of an edge is the max of the two nodes it connects
         n = len(grid)
-        minimum_time = defaultdict(lambda: float('inf')) # in the best path to reach node (x, y), we need to wait at least minimum_time[(x, y)] seconds
-        minimum_time[(0,0)] = 0
+        m = len(grid[0])
+        in_range = lambda x, y: 0 <= x < n and 0 <= y < n
         directions = [[-1, 0], [0, -1], [1, 0], [0, 1]]
-        in_range = lambda row, col: 0 <= row < n and 0 <= col < n
-        queue = [(0, (0,0))] # time to wait, cell
+        visited = set()
+        min_time = defaultdict(lambda x: float('inf'))
+        queue = []
+        
+        heapq.heappush(queue, (grid[0][0], 0, 0))
         
         while queue:
-            max_so_far, cell = heappop(queue)
-            for row_move, col_move in directions:
-                new_row = cell[0] + row_move
-                new_col = cell[1] + col_move
-                if in_range(new_row, new_col):
-                    if max(max_so_far, grid[cell[0]][cell[1]], grid[new_row][new_col]) < minimum_time[(new_row, new_col)]:
-                        minimum_time[(new_row, new_col)] = max(max_so_far, grid[cell[0]][cell[1]], grid[new_row][new_col])
-                        heappush(queue, (minimum_time[(new_row, new_col)], (new_row, new_col)))
-                        
-        return minimum_time[(n - 1, n - 1)]
+            cost, cur_dx, cur_dy = heapq.heappop(queue)
+            if (cur_dx, cur_dy) in visited:
+                continue
+            min_time[(cur_dx, cur_dy)] = cost
+            visited.add((cur_dx, cur_dy))
+            for dx, dy in directions:
+                new_dx, new_dy = cur_dx + dx, cur_dy + dy
+                if in_range(new_dx, new_dy):
+                    heappush(queue, (max(cost, grid[new_dx][new_dy]), new_dx, new_dy))
+        
+        return min_time[(n - 1, m - 1)]
