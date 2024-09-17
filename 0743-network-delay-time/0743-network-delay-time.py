@@ -1,7 +1,6 @@
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
         distances = [float('inf') for _ in range(n)]
-        distances[k - 1] = 0
         queue = []
         graph = defaultdict(list)
         visited = set()
