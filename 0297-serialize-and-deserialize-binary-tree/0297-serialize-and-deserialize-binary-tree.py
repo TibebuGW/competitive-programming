@@ -21,13 +21,16 @@ class Codec:
         return "#".join(ans)
 
     def deserialize(self, data):
-        values = iter(data.split("#"))
+        values = data.split("#")
+        i = 0
         def dfs():
-            val = next(values)
-            if val == "N":
+            nonlocal i
+            if values[i] == "N":
+                i += 1
                 return None
             
-            node = TreeNode(int(val))
+            node = TreeNode(int(values[i]))
+            i += 1
             node.left = dfs()
             node.right = dfs()
             
