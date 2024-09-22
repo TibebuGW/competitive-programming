@@ -1,22 +1,21 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        color = [0]*numCourses
         graph = defaultdict(list)
-        for course, pre in prerequisites:
-            graph[pre].append(course)
+        for u, v in prerequisites:
+            graph[v].append(u)
+        colors = [0 for _ in range(numCourses)]
         
         def dfs(node):
-            if color[node] == 2:
+            if colors[node] == 2:
                 return True
-            if color[node] == 1:
+            if colors[node] == 1:
                 return False
-            color[node] = 1
-
+            
+            colors[node] = 1
             for nei in graph[node]:
                 if not dfs(nei):
                     return False
-            
-            color[node] = 2
+            colors[node] = 2
             return True
         
         for i in range(numCourses):
