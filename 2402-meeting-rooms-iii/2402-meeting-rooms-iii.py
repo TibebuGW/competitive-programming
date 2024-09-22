@@ -13,13 +13,16 @@ class Solution:
                 heapq.heappush(available_rooms, room_number)
             
             # delay the meeting until the earliest ending meeting if there's no available room
+            delay_time = start_time
             if not available_rooms:
                 expected_end_time, room_number = heapq.heappop(used_rooms)
-                end_time = expected_end_time + (end_time - start_time)
+                delay_time = max(delay_time, expected_end_time)
                 heapq.heappush(available_rooms, room_number)
             
             cur_room = heapq.heappop(available_rooms)
             room_freq[cur_room] += 1
-            heapq.heappush(used_rooms, (end_time, cur_room))
+            cur_end_time = delay_time + (end_time - start_time)
+            heapq.heappush(used_rooms, (cur_end_time, cur_room))
         
+        print(room_freq)
         return room_freq.index(max(room_freq))
