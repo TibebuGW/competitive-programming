@@ -1,14 +1,14 @@
-from collections import deque
 class Solution:
-    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:                
-        # print(graph)
-        inDegree = defaultdict(int)
-        graph = defaultdict(set)
-        for i in range(len(ingredients)):
-            for supply in ingredients[i]:
-                graph[supply].add(recipes[i])
-                inDegree[recipes[i]] += 1
-                
+    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+        recipes_set = set()
+        graph = defaultdict(list)
+        in_degree = defaultdict(int)
+        for i in range(len(recipes)):
+            for ingredient in ingredients[i]:
+                graph[ingredient].append(recipes[i])
+                in_degree[recipes[i]] += 1
+            recipes_set.add(recipes[i])
+        
         queue = deque([])
         for supply in supplies:
             queue.append(supply)
@@ -16,12 +16,10 @@ class Solution:
         ans = []
         while queue:
             node = queue.popleft()
-            for recipe in graph[node]:
-                inDegree[recipe] -= 1
-                if inDegree[recipe] == 0:
-                    ans.append(recipe)
-                    queue.append(recipe)
-                    
+            for nei in graph[node]:
+                in_degree[nei] -= 1
+                if in_degree[nei] == 0 and nei in recipes_set:
+                    ans.append(nei)
+                    queue.append(nei)
+        
         return ans
-        
-        
