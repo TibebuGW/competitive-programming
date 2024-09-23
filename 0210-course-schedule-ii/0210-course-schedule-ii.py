@@ -1,28 +1,27 @@
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        color = [0 for _ in range(numCourses)]
-        order = []
+        in_degree = [0 for _ in range(numCourses)]
         graph = defaultdict(list)
-        for v, u in prerequisites:
-            graph[u].append(v)
+        for u, v in prerequisites:
+            graph[v].append(u)
+            in_degree[u] += 1
         
-        def dfs(node):
-            if color[node] == 2:
-                return True
-            if color[node] == 1:
-                return False
-            
-            color[node] = 1
-            for nei in graph[node]:
-                if not dfs(nei):
-                    return False
+        ans = []
+        queue = deque([])
+        for i in range(len(in_degree)):
+            if in_degree[i] == 0:
+                ans.append(i)
+                queue.append(i)
+        
+        while queue:
+            size = len(queue)
+            for _ in range(size):
+                node = queue.popleft()
+                for nei in graph[node]:
+                    in_degree[nei] -= 1
+                    if in_degree[nei] == 0:
+                        ans.append(nei)
+                        queue.append(nei)
                 
-            color[node] = 2
-            order.append(node)
-            return True
         
-        for i in range(numCourses):
-            if color[i] == 0 and not dfs(i):
-                    return []
-        
-        return order[::-1]
+        return ans if len(ans) == numCourses else []
