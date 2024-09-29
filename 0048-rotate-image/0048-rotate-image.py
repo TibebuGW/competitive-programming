@@ -3,28 +3,26 @@ class Solution:
         """
         Do not return anything, modify matrix in-place instead.
         """
-        n = len(matrix)
-        half = n//2
-        limiter = n - 1
+        l, r = 0, len(matrix) - 1
         
-        for i in range(half):
-            for j in range(i, limiter):
-                carry = matrix[i][j]
-                first_alternator = j
-                second_alternator = abs(n - 1 - j)
+        
+        while l < r:
+            
+            for i in range(r - l):
+                t, b = l, r
                 
-                temp = matrix[first_alternator][limiter]
-                matrix[first_alternator][limiter] = carry
+                carry = matrix[t + i][r]
+                matrix[t + i][r] = matrix[t][l + i]
+                
+                temp = matrix[b][r - i]
+                matrix[b][r - i] = carry
                 carry = temp
                 
-                temp = matrix[limiter][second_alternator]
-                matrix[limiter][second_alternator] = carry
+                temp = matrix[b - i][l]
+                matrix[b - i][l] = carry
                 carry = temp
                 
-                temp = matrix[second_alternator][i]
-                matrix[second_alternator][i] = carry
-                carry = temp
-                
-                matrix[i][j] = carry
-                
-            limiter -= 1
+                matrix[t][l + i] = carry
+            
+            l += 1
+            r -= 1
