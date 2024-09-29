@@ -1,35 +1,25 @@
 class Solution:
     def spiralMatrixIII(self, rows: int, cols: int, rStart: int, cStart: int) -> List[List[int]]:
-        in_range = lambda row, col: 0 <= row < rows and 0 <= col < cols
-        ans = []
-        row = rStart
-        col = cStart
-        count = 1
-        while len(ans) < rows*cols:
-            for i in range(col, col+count):
-                if in_range(row, i):
-                    ans.append([row, i])
-            
-            col += count
-            
-            for i in range(row, row+count):
-                if in_range(i, col):
-                    ans.append([i, col])
-            
-            row += count
-            count += 1
-            
-            for i in range(col, col-count, -1):
-                if in_range(row, i):
-                    ans.append([row, i])
-            
-            col -= count
-            
-            for i in range(row, row-count, -1):
-                if in_range(i, col):
-                    ans.append([i, col])
-            
-            row -= count
-            count += 1
+        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        res = []
+        in_range = lambda x, y: 0 <= x < rows and 0 <= y < cols
+        moves = 1
+        r, c = rStart, cStart
+        i = 0
         
-        return ans
+        while len(res) < rows * cols:
+            
+            for _ in range(2):
+                
+                dr, dc = directions[i]
+                for _ in range(moves):
+                    
+                    if in_range(r, c):
+                        res.append([r, c])
+                    r, c = r + dr, c + dc
+                
+                i = (i + 1) % 4
+            
+            moves += 1
+        
+        return res
