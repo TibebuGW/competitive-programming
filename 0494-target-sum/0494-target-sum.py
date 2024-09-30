@@ -1,16 +1,12 @@
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
-        result = [0]
+        ans = [0]
         
         @lru_cache(None)
-        def solve(index = 0, score = 0):
-            # print(index, score)
+        def dp(index = 0, total = 0):
             if index == len(nums):
-                if score == target:
-                    return 1
-                else:
-                    return 0
+                return int(total == target)
             
-            return solve(index + 1, score + nums[index]) + solve(index + 1, score - nums[index])
+            return dp(index + 1, total + nums[index]) + dp(index + 1, total - nums[index])
         
-        return solve()
+        return dp()
