@@ -1,20 +1,12 @@
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         
-        @lru_cache(None)
-        def dp(index = 0):
-            if index == len(nums) - 1:
-                return 1
-            
-            max_ = 0
-            for i in range(index + 1, len(nums)):
-                if nums[i] > nums[index]:
-                    max_ = max(max_, dp(i))
-            
-            return max_ + 1
+        ans = []
+        for num in nums:
+            if not ans or num > ans[-1]:
+                ans.append(num)
+            else:
+                i = bisect_left(ans, num)
+                ans[i] = num
         
-        ans = 1
-        for i in range(len(nums)):
-            ans = max(ans, dp(i))
-        
-        return ans
+        return len(ans)
