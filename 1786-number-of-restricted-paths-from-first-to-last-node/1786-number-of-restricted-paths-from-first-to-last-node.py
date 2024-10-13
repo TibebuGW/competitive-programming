@@ -1,6 +1,5 @@
 class Solution:
     def countRestrictedPaths(self, n: int, edges: List[List[int]]) -> int:
-        MOD = 10**9 + 7
         graph = defaultdict(list)
         for src, dst, weight in edges:
             graph[src - 1].append((dst - 1, weight))
@@ -19,6 +18,7 @@ class Solution:
                     distances[nei] = distance_so_far + weight
                     heappush(queue, (distances[nei], nei))
         
+        
         @lru_cache(None)
         def dp(node = 0):
             if node == n - 1:
@@ -31,4 +31,4 @@ class Solution:
             
             return ans
         
-        return dp() % MOD
+        return dp() % 1_000_000_007
