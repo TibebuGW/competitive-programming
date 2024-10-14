@@ -4,8 +4,8 @@ class Solution:
         coins.sort(reverse = True)
         @lru_cache(None)
         def dp(idx = 0, total = amount):
-            if idx == len(coins):
-                return 0
+            if idx == len(coins) - 1:
+                return int(total % coins[idx] == 0)
             if total == 0:
                 return 1
             
