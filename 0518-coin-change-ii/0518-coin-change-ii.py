@@ -1,7 +1,7 @@
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         
-        
+        coins.sort(reverse = True)
         @lru_cache(None)
         def dp(idx = 0, total = amount):
             if idx == len(coins):
