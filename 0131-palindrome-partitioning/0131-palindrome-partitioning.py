@@ -9,21 +9,20 @@ class Solution:
                 r -= 1
             return True
         
-        ans = []
-        def backtrack(path, cur, index):
+        @lru_cache(None)
+        def dp(index = 0):
             if index == len(s):
-                temp = []
-                for palindrome in path:
-                    temp.append("".join(palindrome))
-                ans.append(temp[:])
-                return
+                return [[]]
             
+            ans = []
             for i in range(index, len(s)):
-                cur.append(s[i])
                 if isPalindrome(index, i):
-                    path.append(cur)
-                    backtrack(path, [], i+1)
-                    path.pop()
+                    next_ = dp(i + 1)
+                    for lst in next_:
+                        tmp = [s[index:i + 1]]
+                        for pal in lst:
+                            tmp.append(pal)
+                        ans.append(tmp)
+            return ans
         
-        backtrack([], [], 0)
-        return ans
+        return dp()
