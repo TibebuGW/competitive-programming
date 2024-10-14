@@ -1,11 +1,15 @@
 class Solution:
-    def isPalindrome(self, array):
-        return array == array[::-1]
     
     def partition(self, s: str) -> List[List[str]]:
+        def isPalindrome(l, r):
+            while l <= r:
+                if s[l] != s[r]:
+                    return False
+                l += 1
+                r -= 1
+            return True
+        
         ans = []
-        
-        
         def backtrack(path, cur, index):
             if index == len(s):
                 temp = []
@@ -16,7 +20,7 @@ class Solution:
             
             for i in range(index, len(s)):
                 cur.append(s[i])
-                if self.isPalindrome(cur):
+                if isPalindrome(index, i):
                     path.append(cur)
                     backtrack(path, [], i+1)
                     path.pop()
