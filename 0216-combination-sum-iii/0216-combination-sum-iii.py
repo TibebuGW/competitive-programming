@@ -1,23 +1,25 @@
 class Solution:
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
         ans = []
+        path = []
         
-        def backtrack(count, total_so_far, path, index):
-            if count == k:
-                if total_so_far == n:
-                    ans.append(path[::])
-                return 
+        def backtrack(i = 1, total = 0):
+            if total == n and len(path) == k:
+                ans.append(path[::])
+                return
             
+            if i > 9:
+                return
             
-            for num in range(index, 10):
-                if total_so_far + num <= n:
-                    path.append(num)
-                    total_so_far += num
-                    backtrack(count + 1, total_so_far, path, num+1)
-                    path.pop()
-                    total_so_far -= num
-                else:
-                    break
+            if len(path) + 1 <= k and total + i <= n:
+                path.append(i)
+                total += i
+                backtrack(i + 1, total)
+                total -= i
+                path.pop()
+            
+            backtrack(i + 1, total)
+            
+        backtrack()
         
-        backtrack(0, 0, [], 1)
         return ans
