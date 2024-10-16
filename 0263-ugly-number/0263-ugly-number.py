@@ -1,13 +1,13 @@
 class Solution:
     def isUgly(self, n: int) -> bool:
+        if n == 1:
+            return True
         if n <= 0:
             return False
-        if n == 1 or n == 2 or n == 3 or n == 5:
-            return True
-        else:
-            for val in [2,3,5]:
-                if n%val == 0:
-                    if self.isUgly(n//val):
-                        return True
-            
-            return False
+        
+        arr = [2, 3, 5]
+        for num in arr:
+            if n % num == 0 and self.isUgly(n // num):
+                return True
+        
+        return False
