@@ -3,47 +3,42 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
-        row = [set() for _ in range(9)]
-        col = [set() for _ in range(9)]
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
         boxes = [set() for _ in range(9)]
-        box_index_calculator = lambda i, j: ((i//3)*3)+(j//3)
+        boxCalculator = lambda i, j: ((i // 3) * 3) + (j // 3)
         
         for i in range(9):
             for j in range(9):
-                if board[i][j] != ".":
-                    num = int(board[i][j])
-                    box_index = box_index_calculator(i, j)
-                    row[i].add(num)
-                    col[j].add(num)
-                    boxes[box_index].add(num)
+                cur = board[i][j]
+                if cur != ".":
+                    rows[i].add(int(cur))
+                    cols[j].add(int(cur))
+                    boxes[boxCalculator(i, j)].add(int(cur))
         
-        flag = [False]
-        def backTrack(i, j):
+        
+        def backtrack(i = 0, j = 0):
             if i == 9:
-                flag[0] = True
-                return
-            new_i = i + (j//8)
-            new_j = (j+1)%9
-            if board[i][j] != ".":
-                backTrack(new_i, new_j)
-            else:
-                for num in range(1, 10):
-                    box_index = box_index_calculator(i, j)
-                    if num not in row[i] and num not in col[j] and num not in boxes[box_index]:
-                        board[i][j] = str(num)
-                        row[i].add(num)
-                        col[j].add(num)
-                        boxes[box_index].add(num)
-                        
-                        backTrack(new_i, new_j)
-                        
-                        if not flag[0]:
-                            board[i][j] = "."
-                            row[i].remove(num)
-                            col[j].remove(num)
-                            boxes[box_index].remove(num)
-                        else:
-                            break
+                return True
             
-        backTrack(0,0)
-                        
+            next_i = i + ((j + 1) // 9)
+            next_j = (j + 1) % 9
+            if board[i][j] == ".":
+                for num in range(1, 10):
+                    if num not in rows[i] and num not in cols[j] and num not in boxes[boxCalculator(i, j)]:
+                        board[i][j] = str(num)
+                        rows[i].add(num)
+                        cols[j].add(num)
+                        boxes[boxCalculator(i, j)].add(num)
+                        if backtrack(next_i, next_j):
+                            return True
+                        rows[i].remove(num)
+                        cols[j].remove(num)
+                        boxes[boxCalculator(i, j)].remove(num)
+                        board[i][j] = "."
+                return False
+            else:
+                return backtrack(next_i, next_j)
+            
+        
+        backtrack()
