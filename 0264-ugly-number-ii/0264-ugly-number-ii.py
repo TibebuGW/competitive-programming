@@ -1,22 +1,22 @@
 class Solution:
     def nthUglyNumber(self, n: int) -> int:
-        index_of_2 = index_of_3 = index_of_5 = 0
-        next_multiple_2 = 2
-        next_multiple_3 = 3
-        next_multiple_5 = 5
-        
+        i2, i3, i5 = 0, 0, 0
+        m2, m3, m5 = 2, 3, 5
         arr = [1]
+        
         while len(arr) < n:
-            next_value = min(next_multiple_2, next_multiple_3, next_multiple_5)
-            if arr[-1] != next_value:
-                arr.append(next_value)
-            if next_value == next_multiple_2:
-                index_of_2 += 1
-                next_multiple_2 = arr[index_of_2]*2
-            elif next_value == next_multiple_3:
-                index_of_3 += 1
-                next_multiple_3 = arr[index_of_3]*3
+            next_num = min(m2, m3, m5)
+            if arr[-1] != next_num:
+                arr.append(next_num)
+            
+            if next_num == m2:
+                i2 += 1
+                m2 = 2 * arr[i2]
+            elif next_num == m3:
+                i3 += 1
+                m3 = 3 * arr[i3]
             else:
-                index_of_5 += 1
-                next_multiple_5 = arr[index_of_5]*5
+                i5 += 1
+                m5 = 5 * arr[i5]
+        
         return arr[-1]
