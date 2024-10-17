@@ -1,45 +1,28 @@
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
-        WORD_KEY = '$'
+        n = len(board)
+        m = len(board[0])
+        in_range = lambda x, y: 0 <= x < n and 0 <= y < m
+        directions = [[-1, 0], [0, -1], [1, 0], [0, 1]]
         
-        trie = {}
-        node = trie
-        for letter in word:
-            node = node.setdefault(letter, {})
-        node[WORD_KEY] = word
-        
-        rowNum = len(board)
-        colNum = len(board[0])
-        
-        matchedWords = []
-        
-        def backtracking(row, col, parent):    
+        def dfs(i, j, index):
+            if index == len(word) - 1:
+                return True
             
-            letter = board[row][col]
-            currNode = parent[letter]
+            char = board[i][j]
+            board[i][j] = "-"
             
-            word_match = currNode.pop(WORD_KEY, False)
-            if word_match:
-                matchedWords.append(word_match)
-            
-            board[row][col] = '#'
-            
-            for (rowOffset, colOffset) in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-                newRow, newCol = row + rowOffset, col + colOffset     
-                if newRow < 0 or newRow >= rowNum or newCol < 0 or newCol >= colNum:
-                    continue
-                if not board[newRow][newCol] in currNode:
-                    continue
-                backtracking(newRow, newCol, currNode)
+            for dx, dy in directions:
+                new_r, new_c = i + dx, j + dy
+                if in_range(new_r, new_c) and board[new_r][new_c] == word[index + 1]:
+                    if dfs(new_r, new_c, index + 1):
+                        return True
+            board[i][j] = char
+            return False
         
-            board[row][col] = letter
-        
-            if not currNode:
-                parent.pop(letter)
-
-        for row in range(rowNum):
-            for col in range(colNum):
-                if board[row][col] in trie:
-                    backtracking(row, col, trie)
-        
-        return len(matchedWords) == 1
+        for row in range(n):
+            for col in range(m):
+                if board[row][col] == word[0] and dfs(row, col, 0):
+                    return True
+                
+        return False
